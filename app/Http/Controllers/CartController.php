@@ -49,7 +49,10 @@ class CartController extends Controller
             $total += $item['price'] * $item['quantity']; 
         } 
 
-        return view('cart.index', compact('cart', 'total')); 
+        // Lấy tất cả sản phẩm để hiển thị trong dropdown thêm nhanh ở trang giỏ hàng
+        $allProducts = Product::orderBy('name')->get();
+
+        return view('cart.index', compact('cart', 'total', 'allProducts')); 
     } 
 
     /**

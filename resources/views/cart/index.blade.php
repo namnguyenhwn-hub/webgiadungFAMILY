@@ -5,6 +5,21 @@
 @section('content') 
 @php 
     $prefix = request()->is('webgiadung*') ? '/webgiadung' : ''; 
+    $settingsPath = storage_path('app/settings.json');
+    $promoCode = 'FAMILY500';
+    $promoValueNum = 500000;
+    if (file_exists($settingsPath)) {
+        $settings = json_decode(file_get_contents($settingsPath), true);
+        if (isset($settings['promo_code'])) $promoCode = $settings['promo_code'];
+        if (isset($settings['promo_value'])) {
+            $valStr = strtoupper($settings['promo_value']);
+            if (str_contains($valStr, 'K')) {
+                $promoValueNum = (int)str_replace('K', '', $valStr) * 1000;
+            } else {
+                $promoValueNum = (int)$valStr;
+            }
+        }
+    }
 @endphp
 <div class="container py-4 my-2" style="max-width: 1200px;">
     <!-- Breadcrumb điều hướng cao cấp -->
@@ -61,15 +76,22 @@
                     <i class="bi bi-list-check me-2 text-primary"></i>Danh sách sản phẩm ({{ count($cart) }})
                 </h5>
                 <div class="d-flex align-items-center gap-2">
+                    <!-- Form thêm sản phẩm trực tiếp -->
+                    <select class="form-select form-select-sm rounded-pill px-3 fw-semibold border-primary text-primary" id="quick_add_product" style="width: auto; font-size: 0.85rem; max-width: 250px; background-color: #F0F9FF; cursor: pointer;" onchange="quickAddProduct(this)">
+                        <option value="">+ Thêm sản phẩm...</option>
+                        @if(isset($allProducts))
+                            @foreach($allProducts as $p)
+                                <option value="{{ $p->id }}" data-name="{{ $p->name }}" data-price="{{ $p->price }}" data-image="{{ $p->image }}">{{ $p->name }} - {{ number_format($p->price, 0, ',', '.') }}đ</option>
+                            @endforeach
+                        @endif
+                    </select>
+
                     <form action="{{ $prefix . route('cart.clear', [], false) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa toàn bộ sản phẩm trong giỏ hàng để chọn lại từ đầu?');" class="mb-0">
                         @csrf
                         <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 fw-semibold" title="Xóa tất cả để chọn lại">
                             <i class="bi bi-trash3 me-1"></i> Xóa tất cả
                         </button>
                     </form>
-                    <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill">
-                        Tồn kho sẵn có &bull; Giao hỏa tốc 2H
-                    </span>
                 </div>
             </div>
             <div class="card-body p-0"> 
@@ -241,7 +263,6 @@
                                 <input type="radio" class="form-check-input mt-0" name="payment_method" id="pm_sepay" value="sepay" checked onchange="highlightPaymentOption(this)">
                                 <div class="flex-grow-1 d-flex justify-content-between align-items-center flex-wrap gap-2">
                                     <strong class="text-dark"><i class="bi bi-lightning-charge-fill text-warning me-1"></i> Chuyển khoản ngân hàng tự động (SePay VietQR 24/7)</strong>
-                                    <span class="badge bg-warning text-dark border px-2 py-1 rounded-pill small">Khuyên dùng</span>
                                 </div>
                             </label>
 
@@ -250,35 +271,10 @@
                                 <input type="radio" class="form-check-input mt-0" name="payment_method" id="pm_cod" value="COD" onchange="highlightPaymentOption(this)">
                                 <div class="flex-grow-1 d-flex justify-content-between align-items-center flex-wrap gap-2">
                                     <strong class="text-dark"><i class="bi bi-cash-stack text-success me-1"></i> Thanh toán tiền mặt khi nhận hàng (COD)</strong>
-                                    <span class="badge bg-light text-secondary border px-2 py-1 rounded-pill small">An tâm 100%</span>
                                 </div>
                             </label>
 
-                            <!-- Phương thức 3: Ví Điện Tử MoMo / ZaloPay -->
-                            <label class="payment-option-card border rounded-3 p-3 d-flex align-items-center gap-3 position-relative cursor-pointer" for="pm_momo" style="cursor: pointer; border-color: #E5E7EB; background: #FFFFFF;">
-                                <input type="radio" class="form-check-input mt-0" name="payment_method" id="pm_momo" value="momo" onchange="highlightPaymentOption(this)">
-                                <div class="flex-grow-1 d-flex justify-content-between align-items-center flex-wrap gap-2">
-                                    <strong class="text-dark"><i class="bi bi-wallet2 text-danger me-1"></i> Ví điện tử MoMo / ZaloPay / Viettel Money</strong>
-                                    <span class="badge bg-danger-subtle text-danger border px-2 py-1 rounded-pill small">Mới &bull; tiện lợi</span>
-                                </div>
-                            </label>
 
-                            <!-- Phương thức 4: Thẻ Tín Dụng / Ghi Nợ Quốc Tế & ATM -->
-                            <label class="payment-option-card border rounded-3 p-3 d-flex align-items-center gap-3 position-relative cursor-pointer" for="pm_card" style="cursor: pointer; border-color: #E5E7EB; background: #FFFFFF;">
-                                <input type="radio" class="form-check-input mt-0" name="payment_method" id="pm_card" value="card" onchange="highlightPaymentOption(this)">
-                                <div class="flex-grow-1 d-flex justify-content-between align-items-center flex-wrap gap-2">
-                                    <strong class="text-dark"><i class="bi bi-credit-card-2-front text-primary me-1"></i> Thẻ ATM nội địa / thẻ quốc tế (Visa, MasterCard, JCB)</strong>
-                                    <span class="badge bg-light text-secondary border px-2 py-1 rounded-pill small">Bảo mật SSL</span>
-                                </div>
-                            </label>
-
-                            <!-- Phương thức 5: Chuyển khoản VietQR BIDV Thủ Công -->
-                            <label class="payment-option-card border rounded-3 p-3 d-flex align-items-center gap-3 position-relative cursor-pointer" for="pm_bidv" style="cursor: pointer; border-color: #E5E7EB; background: #FFFFFF;">
-                                <input type="radio" class="form-check-input mt-0" name="payment_method" id="pm_bidv" value="bidv" onchange="highlightPaymentOption(this)">
-                                <div class="flex-grow-1 d-flex justify-content-between align-items-center flex-wrap gap-2">
-                                    <strong class="text-dark"><i class="bi bi-bank text-info me-1"></i> Chuyển khoản VietQR ngân hàng BIDV (Mã Napas 24/7)</strong>
-                                </div>
-                            </label>
                         </div>
                     </div>
                 </div> 
@@ -305,10 +301,25 @@
                             <span class="text-primary fw-semibold"><i class="bi bi-shield-check me-1"></i>Chính hãng 24 tháng</span>
                         </div>
 
-                        <div class="pt-3 mb-4">
+                        <!-- PHẦN NHẬP VOUCHER -->
+                        <div class="py-3 border-bottom" style="border-color: #E5E7EB !important;">
+                            <label for="voucher_code" class="form-label fw-semibold small text-muted mb-2"><i class="bi bi-ticket-perforated text-warning me-1"></i> Mã giảm giá</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="voucher_code" placeholder="Nhập mã voucher...">
+                                <button class="btn btn-outline-secondary fw-semibold" type="button" id="btn_apply_voucher">Áp dụng</button>
+                            </div>
+                            <div id="voucher_message" class="small mt-2" style="display: none;"></div>
+                        </div>
+
+                        <div class="d-flex justify-content-between py-2 text-muted small mt-2" id="discount_row" style="display: none !important;">
+                            <span>Giảm giá (Voucher):</span>
+                            <span class="text-danger fw-bold" id="discount_amount">-0 đ</span>
+                        </div>
+
+                        <div class="pt-2 mb-4">
                             <div class="d-flex justify-content-between align-items-baseline mb-1">
                                 <span class="fs-5 fw-bold text-dark">Tổng thanh toán:</span>
-                                <h3 class="fw-bold mb-0 text-danger" style="color: #B8860B !important;">
+                                <h3 class="fw-bold mb-0 text-danger" id="final_total_display" style="color: #B8860B !important;">
                                     {{ number_format($total, 0, ',', '.') }} đ
                                 </h3>
                             </div>
@@ -325,15 +336,6 @@
                             </button>
                         @endif
 
-                        <div class="text-center mt-3 pt-3 border-top" style="border-color: #E5E7EB !important;">
-                            <div class="text-muted small mb-2"><i class="bi bi-shield-lock-fill text-success me-1"></i>Giao dịch an toàn &amp; bảo mật thông tin 100%</div>
-                            <div class="d-flex justify-content-center align-items-center gap-3 text-muted" style="font-size: 1.3rem;">
-                                <i class="bi bi-qr-code-scan" title="VietQR"></i>
-                                <i class="bi bi-bank" title="BIDV"></i>
-                                <i class="bi bi-credit-card" title="Visa / Master"></i>
-                                <i class="bi bi-cash" title="COD"></i>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div> 
@@ -470,7 +472,110 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     } catch(err) {}
+
+    // Voucher JS logic
+    const totalAmount = {{ $total ?? 0 }};
+    const minAmount = 1000000;
+    const promoCode = '{{ $promoCode }}';
+    const promoValueNum = {{ $promoValueNum }};
+    
+    const btnApplyVoucher = document.getElementById('btn_apply_voucher');
+    if (btnApplyVoucher) {
+        btnApplyVoucher.addEventListener('click', function() {
+            const inputVal = document.getElementById('voucher_code').value.trim().toUpperCase();
+            const msg = document.getElementById('voucher_message');
+            const discountRow = document.getElementById('discount_row');
+            const discountAmount = document.getElementById('discount_amount');
+            const finalTotalDisplay = document.getElementById('final_total_display');
+            const hiddenTotalInput = document.querySelector('input[name="total"]');
+            
+            if (inputVal === '') {
+                msg.style.display = 'block';
+                msg.className = 'small mt-2 text-danger';
+                msg.innerText = 'Vui lòng nhập mã giảm giá!';
+                return;
+            }
+            
+            if (inputVal !== promoCode.toUpperCase()) {
+                msg.style.display = 'block';
+                msg.className = 'small mt-2 text-danger';
+                msg.innerText = 'Mã giảm giá không hợp lệ hoặc đã hết hạn!';
+                return;
+            }
+            
+            if (totalAmount < minAmount) {
+                msg.style.display = 'block';
+                msg.className = 'small mt-2 text-danger';
+                msg.innerText = 'Mã giảm giá chỉ áp dụng cho đơn hàng từ 1.000.000đ trở lên!';
+                return;
+            }
+            
+            msg.style.display = 'block';
+            msg.className = 'small mt-2 text-success fw-bold';
+            msg.innerText = 'Áp dụng mã giảm giá thành công!';
+            
+            discountRow.style.setProperty('display', 'flex', 'important');
+            discountAmount.innerText = '-' + new Intl.NumberFormat('vi-VN').format(promoValueNum) + ' đ';
+            
+            const newTotal = totalAmount - promoValueNum;
+            finalTotalDisplay.innerText = new Intl.NumberFormat('vi-VN').format(newTotal > 0 ? newTotal : 0) + ' đ';
+            hiddenTotalInput.value = (newTotal > 0 ? newTotal : 0);
+            
+            let hiddenVoucher = document.getElementById('hidden_voucher_code');
+            if (!hiddenVoucher) {
+                hiddenVoucher = document.createElement('input');
+                hiddenVoucher.type = 'hidden';
+                hiddenVoucher.id = 'hidden_voucher_code';
+                hiddenVoucher.name = 'voucher_code';
+                document.getElementById('checkoutOrderForm').appendChild(hiddenVoucher);
+            }
+            hiddenVoucher.value = promoCode;
+            
+            let hiddenDiscount = document.getElementById('hidden_discount');
+            if (!hiddenDiscount) {
+                hiddenDiscount = document.createElement('input');
+                hiddenDiscount.type = 'hidden';
+                hiddenDiscount.id = 'hidden_discount';
+                hiddenDiscount.name = 'discount';
+                document.getElementById('checkoutOrderForm').appendChild(hiddenDiscount);
+            }
+            hiddenDiscount.value = promoValueNum;
+        });
+    }
 });
+
+function quickAddProduct(select) {
+    const option = select.options[select.selectedIndex];
+    if(!option.value) return;
+    
+    const id = option.value;
+    const name = option.getAttribute('data-name');
+    const price = option.getAttribute('data-price');
+    const image = option.getAttribute('data-image');
+    
+    if (typeof window.addToCart === 'function') {
+        window.addToCart(id, name, price, image);
+        // Ngắn thời gian load lại một xíu để app.js kịp lưu localStorage và gửi /api/cart/sync
+        setTimeout(() => {
+            window.location.reload();
+        }, 300);
+    } else {
+        const isWebgiadung = window.location.pathname.includes('/webgiadung');
+        const prefix = isWebgiadung ? '/webgiadung' : '';
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = prefix + '/cart/add/' + id;
+        
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_token';
+        csrfInput.value = '{{ csrf_token() }}';
+        
+        form.appendChild(csrfInput);
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
 
 </script>
 @endsection

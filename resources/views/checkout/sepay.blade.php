@@ -91,35 +91,11 @@
 
 
 
-                <!-- ================================================================= -->
-                <!-- KHU VỰC GIẢ LẬP THANH TOÁN (SEPAY SANDBOX SIMULATOR)              -->
-                <!-- ================================================================= -->
-                <div class="p-3 mb-4 rounded-4" style="background: #FFFBEB; border: 1px dashed #F59E0B;">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-                        <div>
-                            <span class="badge bg-warning text-dark mb-1">
-                                <i class="fa-solid fa-flask me-1"></i> Chế độ kiểm thử & giả lập
-                            </span>
-                            <div class="fw-bold" style="color: #92400E; font-size: 0.95rem;">
-                                Bạn muốn thử nghiệm nhận tiền ngay mà không cần chuyển tiền thật?
-                            </div>
-                            <small class="text-muted">Bấm nút bên cạnh để kích hoạt webhook giả lập SePay, thử âm thanh Ting Ting và xem thông báo thành công.</small>
-                        </div>
-                        <button type="button" id="btnSimulatePayment" class="btn btn-warning fw-bold px-4 py-2" onclick="simulateSepayPayment()" style="border-radius: 9999px; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);">
-                            <i class="fa-solid fa-bolt me-1"></i> Giả lập khách đã chuyển tiền
-                        </button>
-                    </div>
-                </div>
-
                 <!-- Action Buttons -->
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-2 border-top" style="border-color: #E5E7EB !important;">
+                <div class="d-flex justify-content-center align-items-center flex-wrap gap-2 pt-2 border-top" style="border-color: #E5E7EB !important;">
                     <a href="{{ route('cart.index') }}" class="btn py-2 px-3" style="border: 1px solid #E5E7EB; background: #FFFFFF; color: #4B5563; border-radius: 9999px; font-weight: 600; text-decoration: none;">
                         &laquo; Quay lại giỏ hàng
                     </a>
-                    
-                    <button type="button" class="btn btn-outline-secondary py-2 px-3 small" onclick="toggleSetupModal()" style="border-radius: 9999px;">
-                        <i class="fa-solid fa-gear me-1"></i> Hướng dẫn liên kết tài khoản SePay
-                    </button>
                 </div>
 
             </div>
@@ -178,56 +154,7 @@
     </div>
 </div>
 
-<!-- ================================================================= -->
-<!-- MODAL HƯỚNG DẪN LIÊN KẾT TÀI KHOẢN SEPAY                          -->
-<!-- ================================================================= -->
-<div id="sepaySetupModal" class="custom-modal-backdrop" style="display: none;">
-    <div class="custom-modal-card text-start" style="max-width: 600px;">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="fw-bold mb-0 text-dark">
-                <i class="fa-solid fa-link text-primary me-2"></i>Hướng dẫn liên kết SePay vào website
-            </h5>
-            <button type="button" class="btn-close" onclick="toggleSetupModal()"></button>
-        </div>
 
-        <div class="alert alert-warning small p-2 mb-3" style="font-size: 0.8rem; border-radius: 10px;">
-            <i class="fa-solid fa-triangle-exclamation me-1"></i>
-            <strong>Lưu ý về lỗi "Tên miền phải phân giải được DNS và không được là IP Private":</strong>
-            <br>SePay nằm trên máy chủ Internet nên <strong>không thể gửi Webhook trực tiếp vào địa chỉ <code>localhost</code> hoặc <code>127.0.0.1</code></strong> trên máy tính của bạn.
-        </div>
-
-        <h6 class="fw-bold text-dark mb-2" style="font-size: 0.9rem;">
-            <i class="fa-solid fa-star text-warning me-1"></i> Giải pháp 1: Dùng API Token (Khuyên dùng - Không cần tạo Webhook)
-        </h6>
-        <p class="small text-muted mb-2">
-            Bạn <strong>không cần thêm Webhook trên SePay</strong> nữa! Chỉ cần lấy <strong>API Token</strong>:
-        </p>
-        <ol class="small text-muted mb-3" style="line-height: 1.6;">
-            <li>Vào <a href="https://my.sepay.vn" target="_blank" class="fw-bold text-primary">my.sepay.vn</a> &rarr; <strong>"Tích hợp web"</strong> &rarr; <strong>"API & Webhooks"</strong>.</li>
-            <li>Sao chép <strong>API Token</strong> của bạn.</li>
-            <li>Dán vào file <code>.env</code> trong thư mục website:
-                <pre class="bg-dark text-white p-2 rounded mt-1 mb-0" style="font-size: 0.75rem;">SEPAY_API_KEY=ma_api_token_tu_sepay
-SEPAY_BANK_NAME={{ $bankName }}
-SEPAY_ACCOUNT_NO={{ $accountNo }}
-SEPAY_ACCOUNT_NAME="{{ $accountName }}"</pre>
-            </li>
-            <li>Website sẽ <strong>tự động gọi API SePay kiểm tra tiền về và Ting Ting ngay trên localhost</strong>!</li>
-        </ol>
-
-        <h6 class="fw-bold text-dark mb-2" style="font-size: 0.9rem;">
-            <i class="fa-solid fa-globe text-primary me-1"></i> Giải pháp 2: Dùng Cloudflare Tunnel / Ngrok (Nếu muốn dùng Webhook)
-        </h6>
-        <p class="small text-muted mb-3" style="line-height: 1.6;">
-            Mở terminal chạy <code>cloudflared tunnel --url http://localhost:80</code> (hoặc <code>ngrok http 80</code>).
-            <br>Lấy đường link công khai (ví dụ <code>https://ten-ngau-nhien.trycloudflare.com</code>) rồi điền vào SePay Webhook URL:
-            <code class="d-block p-1 bg-light border rounded mt-1 text-primary">https://ten-cua-ban.trycloudflare.com/api/sepay/webhook</code>
-        </p>
-
-        <div class="text-end">
-            <button type="button" class="btn btn-secondary btn-sm px-4" onclick="toggleSetupModal()">Đóng</button>
-        </div>
-    </div>
-</div>
 
 <!-- Audio for Ting Ting Sound Effect via Web Audio API -->
 <script>

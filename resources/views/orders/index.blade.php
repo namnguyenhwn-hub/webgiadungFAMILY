@@ -106,7 +106,7 @@
                                     @endif
                                 </td> 
                                 <td style="color: #78716C; font-size: 0.85rem;">
-                                    {{ $order->created_at ? $order->created_at->format('d/m/Y H:i') : 'Mới tạo' }}
+                                    {{ $order->created_at ? $order->created_at->format('d/m/Y') : 'Mới tạo' }}
                                 </td> 
                             </tr> 
                         @endforeach 

@@ -96,6 +96,7 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
     Route::delete('/orders/{id}', [AdminController::class, 'deleteOrder'])->name('orders.delete');
     Route::post('/banner/upload', [AdminController::class, 'uploadBanner'])->name('banner.upload');
     Route::post('/logo/upload', [AdminController::class, 'uploadLogo'])->name('logo.upload');
+    Route::post('/settings/promo', [AdminController::class, 'updatePromo'])->name('settings.promo');
 });
 
 Route::post('/webgiadung/api/admin/banner/upload', [AdminController::class, 'uploadBanner']);

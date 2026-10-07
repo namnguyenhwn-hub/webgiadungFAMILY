@@ -195,7 +195,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const localUser = localStorage.getItem('family_user') || localStorage.getItem('auraluxe_user');
         if (!isLoggedIn && !localUser) {
           if (btn) { btn.innerHTML = originalContent; btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
-          window.location.href = loginUrl;
+          // Bắt buộc lưu sản phẩm vào localStorage và Session trước khi chuyển hướng đăng nhập
+          let currentCart = [];
+          try { currentCart = JSON.parse(localStorage.getItem('family_cart')) || []; } catch(e) {}
+          const existing = currentCart.find(item => item.id == productId);
+          if (existing) { existing.quantity += 1; }
+          else { currentCart.push({ id: productId, name, price: Number(price), image, quantity: 1 }); }
+          try {
+              localStorage.setItem('family_cart', JSON.stringify(currentCart));
+              localStorage.setItem('aura_cart', JSON.stringify(currentCart));
+          } catch(e) {}
+
+          // Đồng bộ giỏ hàng lên server session ngay lập tức trước khi chuyển trang
+          fetch(syncUrl, {
+              method: 'POST',
+              credentials: 'same-origin',
+              headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+              body: JSON.stringify({ items: currentCart, mode: 'full' })
+          }).finally(() => {
+              window.location.href = loginUrl;
+          });
           return;
         }
 

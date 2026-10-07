@@ -108,7 +108,6 @@ class AdminController extends Controller
             'revenue_total' => number_format($totalRevenue, 0, ',', '.') . ' ₫',
             'revenue_today' => number_format($revenueToday, 0, ',', '.') . ' ₫',
             'revenue_month' => number_format($revenueThisMonth, 0, ',', '.') . ' ₫',
-            'revenue_growth' => '+18.5% so với tháng trước',
             'avg_order_value' => $ordersCount > 0 ? number_format(round($totalRevenue / $ordersCount), 0, ',', '.') . ' ₫' : '0 ₫',
             'orders_count' => $ordersCount,
             'orders_pending' => $pendingOrders,
@@ -304,6 +303,10 @@ class AdminController extends Controller
             'status.required' => 'Vui lòng chọn trạng thái đơn hàng hợp lệ.',
         ]);
 
+        if ($validated['status'] === 'Đã hoàn thành') {
+            $validated['payment_status'] = 'paid';
+        }
+
         $order->update($validated);
 
         return back()->with('success', "Đã cập nhật trạng thái đơn hàng #{$order->order_code} thành [{$order->status}]!");
@@ -353,5 +356,19 @@ class AdminController extends Controller
             return response()->json(['success' => true, 'url' => asset('images/logo_web.png') . '?v=' . time()]);
         }
         return response()->json(['success' => false, 'message' => 'Vui lòng chọn ảnh hợp lệ.']);
+    }
+
+    public function updatePromo(Request $request)
+    {
+        $request->validate([
+            'promo_value' => 'required|string|max:50',
+            'promo_code' => 'required|string|max:50'
+        ]);
+        $settingsPath = storage_path('app/settings.json');
+        $settings = file_exists($settingsPath) ? json_decode(file_get_contents($settingsPath), true) : [];
+        $settings['promo_value'] = $request->promo_value;
+        $settings['promo_code'] = $request->promo_code;
+        file_put_contents($settingsPath, json_encode($settings, JSON_PRETTY_PRINT));
+        return back()->with('success', 'Đã cập nhật cấu hình mã giảm giá thành công!');
     }
 }

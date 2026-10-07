@@ -72,6 +72,27 @@ class CheckoutController extends Controller
                 return $details['price'] * $details['quantity']; 
             }); 
 
+            // Áp dụng mã giảm giá nếu có
+            $discountAmount = 0;
+            $voucherCode = $request->input('voucher_code');
+            if ($voucherCode) {
+                $settingsPath = storage_path('app/settings.json');
+                if (file_exists($settingsPath)) {
+                    $settings = json_decode(file_get_contents($settingsPath), true);
+                    if (isset($settings['promo_code']) && strtoupper($settings['promo_code']) === strtoupper($voucherCode)) {
+                        if ($totalAmount >= 1000000) {
+                            $valStr = strtoupper($settings['promo_value'] ?? '0');
+                            if (str_contains($valStr, 'K')) {
+                                $discountAmount = (int)str_replace('K', '', $valStr) * 1000;
+                            } else {
+                                $discountAmount = (int)$valStr;
+                            }
+                        }
+                    }
+                }
+            }
+            $finalAmount = max(0, $totalAmount - $discountAmount);
+
             $customerName = trim($request->input('receiver_name'));
             $phoneNumber = trim($request->input('phone_number'));
             $shippingAddress = trim($request->input('shipping_address'));
@@ -80,8 +101,8 @@ class CheckoutController extends Controller
             // Tạo bản ghi đơn hàng mới vào DB (tương thích mọi phiên bản schema)
             $order = Order::create([ 
                 'user_id' => Auth::id(), 
-                'total' => $totalAmount, 
-                'amount' => $totalAmount,
+                'total' => $finalAmount, 
+                'amount' => $finalAmount,
                 'status' => 'pending', 
                 'payment_status' => 'unpaid',
                 'payment_method' => $paymentMethod, 

@@ -718,23 +718,6 @@
 
 <body>
 
-    <!-- ==========================================================================
-         TOP ANNOUNCEMENT BAR
-         ========================================================================== -->
-    <div class="top-bar">
-        <div class="container">
-            <div class="top-bar-notice">
-                <i class="fa-solid fa-crown"></i>
-                <span><strong>FAMILY PRIVILEGE:</strong> Miễn phí giao hàng & lắp đặt tận nhà cho đơn hàng từ 2.000.000đ
-                    | Hotline VIP: <a href="tel:0886543518"
-                        style="color: inherit; text-decoration: none; font-weight: 700;">0886.543.518</a></span>
-            </div>
-            <div class="top-bar-links">
-                <a href="#cam-ket"><i class="fa-solid fa-shield-halved"></i> Bảo hành 24 tháng</a>
-                <a href="#lien-he"><i class="fa-solid fa-location-dot"></i> Hệ thống showroom</a>
-            </div>
-        </div>
-    </div>
 
     <!-- ==========================================================================
          MAIN HEADER & NAVIGATION
@@ -1088,39 +1071,6 @@
         </div>
     </section>
 
-    <!-- ==========================================================================
-         2. CATEGORY PILLS FILTER BAR
-         ========================================================================== -->
-    <section class="categories-section" id="danh-muc">
-        <div class="container">
-            <div class="category-pills-wrap">
-                <button class="cat-pill active" data-category="all">
-                    <i class="fa-solid fa-layer-group"></i>
-                    <span>Tất cả sản phẩm</span>
-                    <span class="count">{{ $catCounts["all"] ?? 0 }}</span>
-                </button>
-                @foreach($dbCategories as $cat)
-                <button class="cat-pill" data-category="{{ $cat->slug }}">
-                    @if(str_contains(strtolower($cat->slug), 'chien') || str_contains(strtolower($cat->name), 'chiên'))
-                        <i class="fa-solid fa-fire-burner"></i>
-                    @elseif(str_contains(strtolower($cat->slug), 'bep') || str_contains(strtolower($cat->name), 'bếp'))
-                        <i class="fa-solid fa-kitchen-set"></i>
-                    @elseif(str_contains(strtolower($cat->slug), 'lanh') || str_contains(strtolower($cat->name), 'lạnh'))
-                        <i class="fa-solid fa-snowflake"></i>
-                    @elseif(str_contains(strtolower($cat->slug), 'com') || str_contains(strtolower($cat->name), 'cơm'))
-                        <i class="fa-solid fa-bowl-rice"></i>
-                    @elseif(str_contains(strtolower($cat->slug), 'bui') || str_contains(strtolower($cat->name), 'bụi') || str_contains(strtolower($cat->name), 'robot'))
-                        <i class="fa-solid fa-robot"></i>
-                    @else
-                        <i class="fa-solid fa-tag"></i>
-                    @endif
-                    <span>{{ $cat->name }}</span>
-                    <span class="count">{{ $catCounts[$cat->slug] ?? 0 }}</span>
-                </button>
-                @endforeach
-            </div>
-        </div>
-    </section>
 
     <!-- ==========================================================================
          3. BENTO GRID SHOWCASE (FLAGSHIP SHOWCASE)
@@ -1205,6 +1155,84 @@
             </div>
         @endif
     @endforeach
+
+        @php
+            $promoValue = '500K';
+            $promoCode = 'FAMILY500';
+            if(file_exists(storage_path('app/settings.json'))) {
+                $settings = json_decode(file_get_contents(storage_path('app/settings.json')), true);
+                if(isset($settings['promo_value'])) {
+                    $promoValue = $settings['promo_value'];
+                }
+                if(isset($settings['promo_code'])) {
+                    $promoCode = $settings['promo_code'];
+                }
+            }
+        @endphp
+        <!-- BANNER KHUYẾN MÃI LẤY MÃ GIẢM GIÁ (ĐIỀN VÀO CHỖ TRỐNG 8 COLUMN) -->
+        <style>
+            .bento-promo {
+                grid-column: span 8;
+                background: linear-gradient(135deg, #FFFFFF 0%, #FFFDF5 50%, #FEF5DF 100%) !important;
+                color: #1C1917;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: 40px !important;
+                border: 1px solid rgba(197, 160, 89, 0.3) !important;
+                border-radius: 20px;
+                box-shadow: 0 8px 30px rgba(197, 160, 89, 0.08);
+            }
+            .bento-promo-content {
+                flex: 1;
+                padding-right: 30px;
+            }
+            .bento-promo-visual {
+                flex: 0 0 30%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
+            @media (max-width: 991px) {
+                .bento-promo {
+                    grid-column: span 12;
+                    flex-direction: column;
+                    text-align: center;
+                    padding: 30px !important;
+                }
+                .bento-promo-content {
+                    padding-right: 0;
+                    margin-bottom: 24px;
+                }
+            }
+        </style>
+        <div class="bento-card bento-promo">
+            <div class="bento-promo-content">
+                <span class="bento-badge-gold" style="margin-bottom: 16px;">Ưu đãi độc quyền</span>
+                <p style="color: #57534E; font-size: 0.95rem; margin-bottom: 24px; line-height: 1.6;">Voucher giảm giá cho tất cả khách hàng tham gia vào ngôi nhà FAMILY gia dụng của chúng tôi</p>
+                
+                <form id="promoForm" onsubmit="event.preventDefault(); document.getElementById('promoForm').style.display='none'; document.getElementById('promoCodeResult').style.display='block';" style="display: flex; gap: 8px; align-items: center; background: #FDFBF7; padding: 6px; border-radius: 9999px; border: 1px solid rgba(197, 160, 89, 0.3);">
+                    <input type="email" required placeholder="Nhập email của bạn..." style="flex: 1; background: transparent; border: none; outline: none; color: #1C1917; padding: 10px 16px; font-size: 0.95rem;" />
+                    <button type="submit" style="background: linear-gradient(135deg, #DFC07A 0%, #C5A059 50%, #9B782F 100%); color: white; border: none; padding: 10px 24px; border-radius: 9999px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);">
+                        <i class="fa-solid fa-paper-plane"></i> Nhận mã
+                    </button>
+                </form>
+
+                <div id="promoCodeResult" style="display: none; background: rgba(197, 160, 89, 0.1); border: 1px dashed #C5A059; padding: 15px 20px; border-radius: 12px; margin-top: 15px;">
+                    <div style="color: #8C6A24; font-size: 0.9rem; margin-bottom: 5px;"><i class="fa-solid fa-circle-check me-1"></i> Đăng ký thành công! Mã giảm giá của bạn là:</div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.5rem; font-weight: 900; color: #8C6A24; letter-spacing: 2px;">{{ $promoCode }}</span>
+                        <button type="button" onclick="navigator.clipboard.writeText('{{ $promoCode }}'); this.innerHTML='<i class=\'fa-solid fa-check\'></i> Đã chép'; this.style.color='#8C6A24';" style="background: transparent; border: none; color: #9B782F; font-size: 0.9rem; cursor: pointer; padding: 5px;"><i class="fa-regular fa-copy"></i> Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="bento-promo-visual">
+                <i class="fa-solid fa-ticket" style="font-size: 9rem; color: rgba(197, 160, 89, 0.15); transform: rotate(-15deg);"></i>
+            </div>
+        </div>
+
 </div>
         </section>
 

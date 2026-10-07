@@ -12,12 +12,9 @@
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Quản trị viên</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Báo Cáo Thống Kê</li>
                 </ol>
-            </nav>
             <h1 class="h3 fw-bold text-dark mb-1 d-flex align-items-center gap-2">
                 <span>Báo Cáo & Thống Kê Toàn Hệ Thống</span>
-                <span class="badge bg-success-subtle text-success border border-success-subtle fs-6 py-1 px-2 fw-normal">Thời gian thực</span>
             </h1>
-            <p class="text-muted small mb-0">Theo dõi doanh thu kinh doanh, tình trạng đơn hàng, xuất nhập kho và người dùng theo thời gian thực.</p>
         </div>
 
     </div>
@@ -31,8 +28,13 @@
             <div class="col-md-3 bg-light p-3 border-end">
                 <h6 class="fw-bold mb-3 text-uppercase text-secondary" style="font-size: 0.8rem; letter-spacing: 0.5px;">Trung Tâm Quản Lý</h6>
                 <div class="nav flex-column nav-pills gap-1" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+                    <button class="nav-link active text-start px-3 py-2" id="v-pills-dashboard-tab" data-bs-toggle="pill" data-bs-target="#v-pills-dashboard" type="button" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">
+                        <i class="bi bi-graph-up-arrow me-2"></i>Báo Cáo Thống Kê
+                    </button>
+
                     
-                    <button class="nav-link active text-start px-3 py-2" id="v-pills-product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-product" type="button" role="tab" aria-controls="v-pills-product" aria-selected="true">
+                    <button class="nav-link text-start px-3 py-2" id="v-pills-product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-product" type="button" role="tab" aria-controls="v-pills-product" aria-selected="false">
                         <i class="bi bi-box-seam me-2"></i>Quản Lý Sản Phẩm
                     </button>
                     
@@ -65,123 +67,25 @@
                     <button class="nav-link text-start px-3 py-2" id="v-pills-print-tab" data-bs-toggle="pill" data-bs-target="#v-pills-print" type="button" role="tab" aria-controls="v-pills-print" aria-selected="false">
                         <i class="bi bi-printer me-2"></i>In / Xuất Báo Cáo
                     </button>
+
+                    <hr class="my-1 text-secondary opacity-25">
+
+                    <button class="nav-link text-start px-3 py-2" id="v-pills-promo-tab" data-bs-toggle="pill" data-bs-target="#v-pills-promo" type="button" role="tab" aria-controls="v-pills-promo" aria-selected="false">
+                        <i class="bi bi-ticket-perforated me-2"></i>Cài Đặt Mã Giảm Giá
+                    </button>
                 </div>
             </div>
             
             <!-- Cột phải: Công dụng hiện ra -->
             <div class="col-md-9 p-4 bg-white">
                 <div class="tab-content" id="v-pills-tabContent">
-                    
-                    <!-- Quản Lý Sản Phẩm -->
-                    <div class="tab-pane fade show active" id="v-pills-product" role="tabpanel" aria-labelledby="v-pills-product-tab">
-                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-box-seam text-primary me-2"></i>Quản Lý Sản Phẩm Thiết Bị Gia Dụng</h5>
-                        <p class="text-muted small mb-4">Xem, thêm mới, hoặc chỉnh sửa thông tin các thiết bị gia dụng đang được kinh doanh trên hệ thống website.</p>
-                        <div class="d-flex gap-3 mt-2">
-                            <a href="{{ route('admin.products.index') }}" class="btn btn-primary btn-sm px-4 shadow-sm">
-                                <i class="bi bi-list-ul me-1"></i> Xem Tất Cả Sản Phẩm
-                            </a>
-                            <a href="{{ route('admin.products.create') }}" class="btn btn-outline-primary bg-white btn-sm px-4 shadow-sm">
-                                <i class="bi bi-plus-circle me-1"></i> Thêm Sản Phẩm Mới
-                            </a>
-                        </div>
-                    </div>
 
-                    <!-- Quản Lý Danh Mục -->
-                    <div class="tab-pane fade" id="v-pills-category" role="tabpanel" aria-labelledby="v-pills-category-tab">
-                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-tags text-primary me-2"></i>Quản Lý Danh Mục Sản Phẩm</h5>
-                        <p class="text-muted small mb-4">Phân nhóm các thiết bị (VD: Đồ dùng nhà bếp, máy hút bụi) để giúp khách hàng dễ dàng tìm kiếm hơn.</p>
-                        <div class="d-flex gap-3 mt-2">
-                            <a href="{{ route('admin.categories.index') }}" class="btn btn-primary btn-sm px-4 shadow-sm">
-                                <i class="bi bi-list-ul me-1"></i> Xem Tất Cả Danh Mục
-                            </a>
-                            <a href="{{ route('admin.categories.create') }}" class="btn btn-outline-primary bg-white btn-sm px-4 shadow-sm">
-                                <i class="bi bi-folder-plus me-1"></i> Thêm Danh Mục Mới
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Đơn Hàng Khách -->
-                    <div class="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab">
-                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-receipt text-danger me-2"></i>Quản Lý Đơn Hàng Khách Mua</h5>
-                        <p class="text-muted small mb-4">Theo dõi chi tiết các đơn đặt hàng, kiểm tra thông tin thanh toán, và cập nhật trạng thái vận chuyển.</p>
-                        <button type="button" class="btn btn-danger btn-sm px-4 shadow-sm" onclick="document.getElementById('section-orders').scrollIntoView({behavior: 'smooth'})">
-                            <i class="bi bi-arrow-down-circle me-1"></i> Cuộn xuống Bảng Đơn Hàng
-                        </button>
-                    </div>
-
-                    <!-- Người Dùng -->
-                    <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
-                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-people text-info me-2"></i>Quản Lý Tài Khoản Người Dùng</h5>
-                        <p class="text-muted small mb-4">Kiểm soát danh sách khách hàng đã đăng ký, hỗ trợ cấp quyền, khóa tài khoản hoặc sửa thông tin.</p>
-                        <button type="button" class="btn btn-info text-white btn-sm px-4 shadow-sm" onclick="document.getElementById('section-users').scrollIntoView({behavior: 'smooth'})">
-                            <i class="bi bi-arrow-down-circle me-1"></i> Cuộn xuống Bảng Người Dùng
-                        </button>
-                    </div>
-
-                    <!-- Tin Nhắn -->
-                    <div class="tab-pane fade" id="v-pills-chat" role="tabpanel" aria-labelledby="v-pills-chat-tab">
-                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-chat-dots text-success me-2"></i>Hộp Thư Tin Nhắn & Hỗ Trợ Khách Hàng</h5>
-                        <p class="text-muted small mb-4">Trung tâm phản hồi và tư vấn nhanh chóng các thắc mắc của khách hàng gửi về qua hộp thoại chat trên web.</p>
-                        <button type="button" class="btn btn-success btn-sm px-4 shadow-sm" onclick="document.getElementById('section-chat').scrollIntoView({behavior: 'smooth'})">
-                            <i class="bi bi-arrow-down-circle me-1"></i> Cuộn xuống Hộp Thư Tin Nhắn
-                        </button>
-                    </div>
-
-                    <!-- Sửa Ảnh Banner -->
-                    <div class="tab-pane fade" id="v-pills-banner" role="tabpanel" aria-labelledby="v-pills-banner-tab">
-                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-images text-warning me-2"></i>Quản lý thứ tự Banner Trang Chủ</h5>
-                        <p class="text-muted small mb-4">Tải lên tối đa 3 ảnh banner. Bạn có thể cập nhật từng vị trí hoặc cập nhật tất cả cùng lúc. Các vị trí để trống sẽ giữ nguyên banner cũ.</p>
-                        <form id="inlineBannerForm" class="row g-3">
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold small text-secondary">Banner 1 (Đầu tiên)</label>
-                                <input type="file" class="form-control form-control-sm" id="inline_banner_1" accept="image/*">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold small text-secondary">Banner 2 (Tiếp theo)</label>
-                                <input type="file" class="form-control form-control-sm" id="inline_banner_2" accept="image/*">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold small text-secondary">Banner 3 (Cuối cùng)</label>
-                                <input type="file" class="form-control form-control-sm" id="inline_banner_3" accept="image/*">
-                            </div>
-                            <div class="col-12 mt-4">
-                                <button type="button" class="btn btn-warning btn-sm fw-bold px-4 shadow-sm" onclick="submitInlineBanner()">
-                                    <i class="bi bi-cloud-upload me-1"></i> Lưu Cập Nhật Banner
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Sửa Logo -->
-                    <div class="tab-pane fade" id="v-pills-logo" role="tabpanel" aria-labelledby="v-pills-logo-tab">
-                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-camera text-success me-2"></i>Cập Nhật Logo Website</h5>
-                        <p class="text-muted small mb-4">Khuyến nghị sử dụng ảnh định dạng PNG có nền trong suốt (transparent) để đảm bảo độ thẩm mỹ cao nhất trên các nền màu khác nhau.</p>
-                        <div class="d-flex align-items-end gap-3 bg-light p-3 rounded border">
-                            <div class="flex-grow-1">
-                                <label class="form-label fw-bold small mb-2">Chọn tệp Logo từ máy tính:</label>
-                                <input type="file" class="form-control form-control-sm" id="inlineLogoInput" accept="image/png, image/jpeg">
-                            </div>
-                            <button type="button" class="btn btn-success btn-sm fw-bold px-4 shadow-sm" onclick="uploadImage(document.getElementById('inlineLogoInput'), 'logo')">
-                                <i class="bi bi-check2-circle me-1"></i> Tải Logo Lên
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- In Báo Cáo -->
-                    <div class="tab-pane fade" id="v-pills-print" role="tabpanel" aria-labelledby="v-pills-print-tab">
-                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-printer text-secondary me-2"></i>Kết Xuất & In Ấn Báo Cáo</h5>
-                        <p class="text-muted small mb-4">Chức năng này cho phép bạn xuất toàn bộ nội dung của Bảng điều khiển (Dashboard) thành file PDF lưu trữ hoặc in trực tiếp ra giấy.</p>
-                        <button type="button" class="btn btn-dark btn-sm px-4 shadow-sm" onclick="window.print()">
-                            <i class="bi bi-printer-fill me-1"></i> Khởi động trình In Báo Cáo (Ctrl+P)
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- =========================================================================
+                    <!-- Báo Cáo Thống Kê -->
+                    <div class="tab-pane fade show active" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab">
+                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-graph-up-arrow text-primary me-2"></i>Báo Cáo & Thống Kê Doanh Thu</h5>
+                        <p class="text-muted small mb-4">Tổng quan về doanh thu, tình trạng đơn hàng, và phân bổ danh mục sản phẩm.</p>
+                        
+                        <!-- =========================================================================
      1. HÀNG 4 THẺ CHỈ SỐ KPI TÀI CHÍNH & VẬN HÀNH (METRIC CARDS)
      ========================================================================= -->
 <div class="row g-3 mb-4">
@@ -197,7 +101,6 @@
             <div class="fs-4 fw-bold text-dark mb-1">{{ $stats['revenue_total'] }}</div>
             <div class="d-flex align-items-center justify-content-between text-muted small mt-auto pt-2 border-top">
                 <span>Hôm nay: <strong class="text-success">{{ $stats['revenue_today'] }}</strong></span>
-                <span class="badge bg-success-subtle text-success">{{ $stats['revenue_growth'] }}</span>
             </div>
         </div>
     </div>
@@ -415,7 +318,43 @@
     </div>
 </div>
 
-<!-- =========================================================================
+
+                    </div>
+
+                    
+                    <!-- Quản Lý Sản Phẩm -->
+                    <div class="tab-pane fade" id="v-pills-product" role="tabpanel" aria-labelledby="v-pills-product-tab">
+                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-box-seam text-primary me-2"></i>Quản Lý Sản Phẩm Thiết Bị Gia Dụng</h5>
+                        <p class="text-muted small mb-4">Xem, thêm mới, hoặc chỉnh sửa thông tin các thiết bị gia dụng đang được kinh doanh trên hệ thống website.</p>
+                        <div class="d-flex gap-3 mt-2">
+                            <a href="{{ route('admin.products.index') }}" class="btn btn-primary btn-sm px-4 shadow-sm">
+                                <i class="bi bi-list-ul me-1"></i> Xem Tất Cả Sản Phẩm
+                            </a>
+                            <a href="{{ route('admin.products.create') }}" class="btn btn-outline-primary bg-white btn-sm px-4 shadow-sm">
+                                <i class="bi bi-plus-circle me-1"></i> Thêm Sản Phẩm Mới
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Quản Lý Danh Mục -->
+                    <div class="tab-pane fade" id="v-pills-category" role="tabpanel" aria-labelledby="v-pills-category-tab">
+                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-tags text-primary me-2"></i>Quản Lý Danh Mục Sản Phẩm</h5>
+                        <p class="text-muted small mb-4">Phân nhóm các thiết bị (VD: Đồ dùng nhà bếp, máy hút bụi) để giúp khách hàng dễ dàng tìm kiếm hơn.</p>
+                        <div class="d-flex gap-3 mt-2">
+                            <a href="{{ route('admin.categories.index') }}" class="btn btn-primary btn-sm px-4 shadow-sm">
+                                <i class="bi bi-list-ul me-1"></i> Xem Tất Cả Danh Mục
+                            </a>
+                            <a href="{{ route('admin.categories.create') }}" class="btn btn-outline-primary bg-white btn-sm px-4 shadow-sm">
+                                <i class="bi bi-folder-plus me-1"></i> Thêm Danh Mục Mới
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Đơn Hàng Khách -->
+                    <div class="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab">
+                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-receipt text-danger me-2"></i>Quản Lý Đơn Hàng Khách Mua</h5>
+                        <p class="text-muted small mb-4">Theo dõi chi tiết các đơn đặt hàng, kiểm tra thông tin thanh toán, và cập nhật trạng thái vận chuyển.</p>
+                        <!-- =========================================================================
      4. BẢNG QUẢN LÝ ĐƠN HÀNG GẦN ĐÂY
      ========================================================================= -->
 <div class="card border mb-4" id="section-orders">
@@ -542,8 +481,13 @@
         </div>
     </div>
 </div>
+                    </div>
 
-<!-- =========================================================================
+                    <!-- Người Dùng -->
+                    <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
+                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-people text-info me-2"></i>Quản Lý Tài Khoản Người Dùng</h5>
+                        <p class="text-muted small mb-4">Kiểm soát danh sách khách hàng đã đăng ký, hỗ trợ cấp quyền, khóa tài khoản hoặc sửa thông tin.</p>
+                        <!-- =========================================================================
      5. BẢNG QUẢN LÝ NGƯỜI DÙNG & TÀI KHOẢN
      ========================================================================= -->
 <div class="card border mb-4" id="section-users">
@@ -569,7 +513,6 @@
                         <th>Vai Trò</th>
                         <th>Trạng Thái</th>
                         <th>Ngày Tham Gia</th>
-                        <th class="text-end pe-3">Phân Quyền</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -609,26 +552,6 @@
                         <td class="small text-muted">
                             {{ $user->created_at ? $user->created_at->format('d/m/Y') : '---' }}
                         </td>
-                        <td class="text-end pe-3">
-                            @if($user->id !== Auth::id())
-                            <form action="{{ route('admin.users.role', $user->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @if($user->role === 'admin')
-                                    <input type="hidden" name="role" value="customer">
-                                    <button type="submit" class="btn btn-outline-secondary btn-sm py-1 px-2" title="Hạ quyền thành khách hàng" onclick="return confirm('Bạn có chắc muốn hạ quyền tài khoản {{ $user->name }} xuống Khách hàng (User)?')">
-                                        <i class="fa-solid fa-arrow-down me-1"></i> Hạ quyền User
-                                    </button>
-                                @else
-                                    <input type="hidden" name="role" value="admin">
-                                    <button type="submit" class="btn btn-outline-warning btn-sm py-1 px-2 text-dark" title="Nâng lên quản trị viên" onclick="return confirm('Bạn có chắc muốn nâng tài khoản {{ $user->name }} lên làm Quản trị viên?')">
-                                        <i class="fa-solid fa-arrow-up me-1 text-warning"></i> Nâng Admin
-                                    </button>
-                                @endif
-                            </form>
-                            @else
-                            <span class="text-muted small fst-italic">Tài khoản hiện tại</span>
-                            @endif
-                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -636,8 +559,13 @@
         </div>
     </div>
 </div>
+                    </div>
 
-<!-- =========================================================================
+                    <!-- Tin Nhắn -->
+                    <div class="tab-pane fade" id="v-pills-chat" role="tabpanel" aria-labelledby="v-pills-chat-tab">
+                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-chat-dots text-success me-2"></i>Hộp Thư Tin Nhắn & Hỗ Trợ Khách Hàng</h5>
+                        <p class="text-muted small mb-4">Trung tâm phản hồi và tư vấn nhanh chóng các thắc mắc của khách hàng gửi về qua hộp thoại chat trên web.</p>
+                        <!-- =========================================================================
      6. TRUNG TÂM TIN NHẮN TƯ VẤN KHÁCH HÀNG (LIVE CHAT SUPPORT)
      ========================================================================= -->
 <div class="card border mb-4" id="section-chat" style="border-radius: 16px; overflow: hidden;">
@@ -713,6 +641,100 @@
             </div>
         </div>
     </div>
+</div>
+                    </div>
+
+                    <!-- Sửa Ảnh Banner -->
+                    <div class="tab-pane fade" id="v-pills-banner" role="tabpanel" aria-labelledby="v-pills-banner-tab">
+                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-images text-warning me-2"></i>Quản lý thứ tự Banner Trang Chủ</h5>
+                        <p class="text-muted small mb-4">Tải lên tối đa 3 ảnh banner. Bạn có thể cập nhật từng vị trí hoặc cập nhật tất cả cùng lúc. Các vị trí để trống sẽ giữ nguyên banner cũ.</p>
+                        <form id="inlineBannerForm" class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small text-secondary">Banner 1 (Đầu tiên)</label>
+                                <input type="file" class="form-control form-control-sm" id="inline_banner_1" accept="image/*">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small text-secondary">Banner 2 (Tiếp theo)</label>
+                                <input type="file" class="form-control form-control-sm" id="inline_banner_2" accept="image/*">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small text-secondary">Banner 3 (Cuối cùng)</label>
+                                <input type="file" class="form-control form-control-sm" id="inline_banner_3" accept="image/*">
+                            </div>
+                            <div class="col-12 mt-4">
+                                <button type="button" class="btn btn-warning btn-sm fw-bold px-4 shadow-sm" onclick="submitInlineBanner()">
+                                    <i class="bi bi-cloud-upload me-1"></i> Lưu Cập Nhật Banner
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Sửa Logo -->
+                    <div class="tab-pane fade" id="v-pills-logo" role="tabpanel" aria-labelledby="v-pills-logo-tab">
+                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-camera text-success me-2"></i>Cập Nhật Logo Website</h5>
+                        <p class="text-muted small mb-4">Khuyến nghị sử dụng ảnh định dạng PNG có nền trong suốt (transparent) để đảm bảo độ thẩm mỹ cao nhất trên các nền màu khác nhau.</p>
+                        <div class="d-flex align-items-end gap-3 bg-light p-3 rounded border">
+                            <div class="flex-grow-1">
+                                <label class="form-label fw-bold small mb-2">Chọn tệp Logo từ máy tính:</label>
+                                <input type="file" class="form-control form-control-sm" id="inlineLogoInput" accept="image/png, image/jpeg">
+                            </div>
+                            <button type="button" class="btn btn-success btn-sm fw-bold px-4 shadow-sm" onclick="uploadImage(document.getElementById('inlineLogoInput'), 'logo')">
+                                <i class="bi bi-check2-circle me-1"></i> Tải Logo Lên
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- In Báo Cáo -->
+                    <div class="tab-pane fade" id="v-pills-print" role="tabpanel" aria-labelledby="v-pills-print-tab">
+                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-printer text-secondary me-2"></i>Kết Xuất & In Ấn Báo Cáo</h5>
+                        <p class="text-muted small mb-4">Chức năng này cho phép bạn xuất toàn bộ nội dung của Bảng điều khiển (Dashboard) thành file PDF lưu trữ hoặc in trực tiếp ra giấy.</p>
+                        <button type="button" class="btn btn-dark btn-sm px-4 shadow-sm" onclick="window.print()">
+                            <i class="bi bi-printer-fill me-1"></i> Khởi động trình In Báo Cáo (Ctrl+P)
+                        </button>
+                    </div>
+
+                    <!-- Cài Đặt Khuyến Mãi -->
+                    <div class="tab-pane fade" id="v-pills-promo" role="tabpanel" aria-labelledby="v-pills-promo-tab">
+                        <h5 class="fw-bold text-dark mb-2"><i class="bi bi-ticket-perforated text-danger me-2"></i>Cài Đặt Mã Khuyến Mãi Trang Chủ</h5>
+                        <p class="text-muted small mb-4">Thay đổi mức giá trị mã giảm giá hiển thị trên trang chủ.</p>
+                        
+                        @php
+                            $promoValue = '500K';
+                            $promoCode = 'FAMILY500';
+                            if(file_exists(storage_path('app/settings.json'))) {
+                                $settings = json_decode(file_get_contents(storage_path('app/settings.json')), true);
+                                if(isset($settings['promo_value'])) {
+                                    $promoValue = $settings['promo_value'];
+                                }
+                                if(isset($settings['promo_code'])) {
+                                    $promoCode = $settings['promo_code'];
+                                }
+                            }
+                        @endphp
+                        
+                        <form action="{{ route('admin.settings.promo') }}" method="POST" class="bg-light p-3 rounded border" style="max-width: 500px;">
+                            @csrf
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small">Mức giá mã giảm giá hiển thị (VD: 500K, 200.000đ):</label>
+                                <input type="text" class="form-control" name="promo_value" value="{{ $promoValue }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small">Mã giảm giá thực tế (VD: FAMILY500):</label>
+                                <input type="text" class="form-control" name="promo_code" value="{{ $promoCode }}" required>
+                            </div>
+                            <button type="submit" class="btn btn-danger btn-sm fw-bold px-4 shadow-sm">
+                                <i class="bi bi-save me-1"></i> Lưu Cập Nhật
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
 </div>
 
 
