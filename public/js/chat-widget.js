@@ -4,8 +4,21 @@
  */
 (function () {
     // 1. Khởi tạo Session ID định danh khách hàng
+    function getCurrentUser() {
+        try {
+            const raw = localStorage.getItem('family_user') || localStorage.getItem('auraluxe_user');
+            if (raw) return JSON.parse(raw);
+        } catch (e) {}
+        return null;
+    }
+
     let sessionId = localStorage.getItem('family_chat_session_id');
-    if (!sessionId) {
+    const user = getCurrentUser();
+    
+    if (user && user.id) {
+        sessionId = 'user_' + user.id;
+        localStorage.setItem('family_chat_session_id', sessionId);
+    } else if (!sessionId || sessionId.startsWith('user_')) {
         sessionId = 'cust_' + Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
         localStorage.setItem('family_chat_session_id', sessionId);
     }
@@ -19,14 +32,6 @@
     let lastMessageCount = 0;
     let localMessages = [];
 
-    // Lấy thông tin user hiện tại nếu có
-    function getCurrentUser() {
-        try {
-            const raw = localStorage.getItem('auraluxe_user');
-            if (raw) return JSON.parse(raw);
-        } catch (e) {}
-        return null;
-    }
 
     // Tạo âm thanh thông báo nhẹ nhàng
     function playChatChime() {
