@@ -1,0 +1,1 @@
+@include('checkout.bank-qr')

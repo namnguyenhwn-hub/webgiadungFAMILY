@@ -1,0 +1,1 @@
+app('router')- ? 'Homepage renders OK' : 'err'; 

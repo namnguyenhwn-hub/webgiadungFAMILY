@@ -1,0 +1,1 @@
+App\Models\Product::where('image', 'like', 'public/%%')- \- = str_replace('public/', '', \-; \-; }); 

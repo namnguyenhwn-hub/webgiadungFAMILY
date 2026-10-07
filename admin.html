@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="only light">
+    <meta name="supported-color-schemes" content="light">
+    <meta name="darkreader-lock" content="true">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Hệ Thống Quản Trị Trung Tâm - FAMILY</title>
+
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- CSS Style Pure White -->
+    <link rel="stylesheet" href="public/css/style.css?v=pure_white_luxury_v2">
+    <style>
+        :root,
+        html,
+        body {
+            color-scheme: only light !important;
+            forced-color-adjust: none !important;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: #F9FAFB !important;
+            color: #111827 !important;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .admin-navbar {
+            background: #FFFFFF !important;
+            border-bottom: 1px solid #E5E7EB;
+            padding: 0 32px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .admin-nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .admin-badge-label {
+            background: linear-gradient(135deg, rgba(197, 160, 89, 0.15) 0%, rgba(197, 160, 89, 0.05) 100%);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            color: #916F29;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .admin-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .admin-user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 14px;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 9999px;
+        }
+
+        .admin-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #DFC07A, #C5A059);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .admin-user-info {
+            line-height: 1.2;
+        }
+
+        .admin-user-name {
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: #0F172A;
+        }
+
+        .admin-user-role {
+            font-size: 0.72rem;
+            color: #C5A059;
+            font-weight: 600;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .admin-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 28px;
+        }
+
+        .admin-page-title h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #0F172A;
+            margin: 0 0 6px 0;
+            letter-spacing: -0.02em;
+        }
+
+        .admin-page-title p {
+            color: #64748B;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* KPI Bento Grid */
+        .kpi-bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .kpi-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            border-color: #CBD5E1;
+        }
+
+        .kpi-info h4 {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0 0 8px 0;
+        }
+
+        .kpi-value {
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: #0F172A;
+            margin: 0 0 4px 0;
+        }
+
+        .kpi-sub {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #10B981;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .kpi-icon-wrap {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .icon-revenue {
+            background: rgba(197, 160, 89, 0.12);
+            color: #C5A059;
+        }
+
+        .icon-orders {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3B82F6;
+        }
+
+        .icon-inventory {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+        }
+
+        .icon-users {
+            background: rgba(139, 92, 246, 0.1);
+            color: #8B5CF6;
+        }
+
+        /* Tabs */
+        .admin-nav-tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid #E2E8F0;
+            margin-bottom: 24px;
+        }
+
+        .admin-tab-btn {
+            background: transparent;
+            border: none;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #64748B;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .admin-tab-btn:hover {
+            color: #0F172A;
+        }
+
+        .admin-tab-btn.active {
+            color: #C5A059;
+            border-bottom-color: #C5A059;
+            font-weight: 700;
+        }
+
+        .tab-count-badge {
+            background: #E2E8F0;
+            color: #475569;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+        }
+
+        .admin-tab-btn.active .tab-count-badge {
+            background: #C5A059;
+            color: #FFFFFF;
+        }
+
+        /* Tab Content Panel */
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* Modern Data Table */
+        .admin-table-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+        }
+
+        .table-card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #E2E8F0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #FAFAFA;
+        }
+
+        .table-card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0F172A;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.875rem;
+        }
+
+        .admin-table th {
+            background: #FFFFFF;
+            color: #475569;
+            font-weight: 700;
+            padding: 14px 20px;
+            border-bottom: 1px solid #E2E8F0;
+            font-size: 0.8125rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .admin-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #F1F5F9;
+            color: #334155;
+            vertical-align: middle;
+        }
+
+        .admin-table tr:hover td {
+            background-color: #FAFAFA;
+        }
+
+        /* Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .status-completed {
+            background: rgba(16, 185, 129, 0.12);
+            color: #059669;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .status-shipping {
+            background: rgba(59, 130, 246, 0.12);
+            color: #2563EB;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.12);
+            color: #D97706;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.12);
+            color: #DC2626;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .role-admin {
+            background: linear-gradient(135deg, rgba(197, 160, 89, 0.2) 0%, rgba(197, 160, 89, 0.08) 100%);
+            color: #916F29;
+            border: 1px solid rgba(197, 160, 89, 0.4);
+        }
+
+        .role-user {
+            background: #F1F5F9;
+            color: #475569;
+            border: 1px solid #CBD5E1;
+        }
+
+        .btn-table-action {
+            padding: 6px 12px;
+            font-size: 0.775rem;
+            font-weight: 600;
+            border-radius: 8px;
+            border: 1px solid #CBD5E1;
+            background: #FFFFFF;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .btn-table-action:hover {
+            background: #F1F5F9;
+            border-color: #94A3B8;
+        }
+
+        .btn-edit {
+            color: #2563EB;
+            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .btn-edit:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: #3B82F6;
+        }
+
+        .btn-promote {
+            color: #916F29;
+            border-color: rgba(197, 160, 89, 0.4);
+            background: rgba(197, 160, 89, 0.05);
+        }
+
+        .btn-promote:hover {
+            background: rgba(197, 160, 89, 0.15);
+            border-color: #C5A059;
+        }
+
+        .btn-delete {
+            color: #DC2626;
+            border-color: #FECACA;
+            background: #FEF2F2;
+        }
+
+        .btn-delete:hover {
+            background: #FEE2E2;
+            border-color: #F87171;
+        }
+
+        /* MODAL STYLES */
+        .admin-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .admin-modal-overlay.active {
+            display: flex;
+        }
+
+        .admin-modal-content {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 540px;
+            overflow: hidden;
+            animation: modalSlideUp 0.25s ease-out;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .admin-modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #E2E8F0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #FAFAFA;
+        }
+
+        .admin-modal-header h3 {
+            margin: 0;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0F172A;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: #64748B;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .admin-modal-close:hover {
+            color: #0F172A;
+        }
+
+        .admin-modal-body {
+            padding: 24px;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .admin-modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #E2E8F0;
+            background: #FFFFFF;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-grid-5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        @media (max-width: 1024px) {
+            .form-grid-5 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .form-grid-5 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .admin-form-group {
+            margin-bottom: 16px;
+        }
+
+        .admin-form-label {
+            display: block;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .admin-form-input,
+        .admin-form-select,
+        .admin-form-textarea {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            border: 1px solid #CBD5E1;
+            border-radius: 8px;
+            background: #FFFFFF;
+            color: #0F172A;
+            outline: none;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        .admin-form-input:focus,
+        .admin-form-select:focus,
+        .admin-form-textarea:focus {
+            border-color: #C5A059;
+            box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.15);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Admin Sticky Navbar -->
+    <nav class="admin-navbar">
+        <div class="admin-nav-left">
+            <a href="index.html" class="brand-logo" style="font-size: 1.25rem;">
+                <div class="logo-crest" style="width: 32px; height: 32px; font-size: 0.85rem;">
+                    <i class="fa-solid fa-gem"></i>
+                </div>
+                <div class="logo-text">
+                    FAMILY<span class="text-gold-gradient font-serif">LUXE</span>
+                </div>
+            </a>
+            <span class="admin-badge-label">
+                <i class="fa-solid fa-shield-halved"></i> Quản Trị Hệ Thống
+            </span>
+        </div>
+
+        <div class="admin-nav-right">
+            <button type="button" class="btn-table-action"
+                onclick="switchAdminTab('tab-chat', document.getElementById('tabChatBtn'))"
+                style="background: rgba(197, 160, 89, 0.12); border-color: rgba(197, 160, 89, 0.4); color: #916F29; font-weight: 700;">
+                <i class="fa-solid fa-comments"></i> Tin Nhắn Khách Hàng <span id="adminChatUnreadBadge"
+                    style="background: #EF4444; color: #fff; padding: 2px 7px; border-radius: 9999px; font-size: 0.7rem; margin-left: 4px; display: none;">0</span>
+            </button>
+            <a href="index.html" class="btn-table-action" title="Mở trang chủ khách hàng">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Xem Trang Chủ
+            </a>
+
+            <!-- Admin Profile Badge -->
+            <div class="admin-user-profile">
+                <div class="admin-avatar">
+                    <i class="fa-solid fa-user-tie"></i>
+                </div>
+                <div class="admin-user-info">
+                    <div class="admin-user-name">Quản Trị Viên FAMILY LUXE</div>
+                    <div class="admin-user-role">Quản Trị Viên Cấp Cao</div>
+                </div>
+            </div>
+
+            <!-- Logout -->
+            <button class="btn-table-action btn-delete" onclick="logoutAdmin()" title="Đăng xuất quản trị">
+                <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="admin-container">
+
+        <!-- Page Header -->
+        <div class="admin-header-row">
+            <div class="admin-page-title">
+                <h1>Bảng Điều Khiển Quản Trị (Admin Control Center)</h1>
+                <p>Theo dõi kinh doanh thiết bị gia dụng cao cấp, cập nhật đơn hàng và quản lý chỉnh sửa toàn diện</p>
+            </div>
+            <div class="admin-header-date" style="display: flex; gap: 10px;">
+                <input type="file" id="logoUploadInput" style="display:none;" accept="image/png, image/jpeg" onchange="uploadLogo(this)">
+                <button type="button" class="btn" style="background: #10B981; color: #FFF; padding: 10px 20px; font-size: 0.875rem; border: none; border-radius: 9999px; cursor: pointer; font-weight: 600;" onclick="document.getElementById('logoUploadInput').click()">
+                    <i class="fa-solid fa-camera"></i> Sửa Logo Web
+                </button>
+                <button type="button" class="btn" style="background: #F59E0B; color: #FFF; padding: 10px 20px; font-size: 0.875rem; border: none; border-radius: 9999px; cursor: pointer; font-weight: 600;" onclick="openModal('bannerModal')">
+                    <i class="fa-solid fa-image"></i> Sửa Ảnh Banner
+                </button>
+                <button type="button" class="btn btn-gold" onclick="openAddProductModal()"
+                    style="padding: 10px 20px; font-size: 0.875rem;">
+                    <i class="fa-solid fa-plus"></i> Thêm Thiết Bị Mới
+                </button>
+            </div>
+        </div>
+
+        <!-- 4 Key KPI Bento Cards -->
+        <div class="kpi-bento-grid">
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <h4>Doanh Thu Thực Tế</h4>
+                    <div class="kpi-value text-gold" id="kpiRevenue">88.280.000 ₫</div>
+                    <div class="kpi-sub">
+                        <i class="fa-solid fa-arrow-trend-up"></i> +22.5% so với tháng trước
+                    </div>
+                </div>
+                <div class="kpi-icon-wrap icon-revenue">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <h4>Đơn Hàng</h4>
+                    <div class="kpi-value" id="kpiOrdersCount">4 đơn</div>
+                    <div class="kpi-sub" style="color: #F59E0B;" id="kpiPendingCount">
+                        <i class="fa-solid fa-clock"></i> 1 đơn chờ xác nhận
+                    </div>
+                </div>
+                <div class="kpi-icon-wrap icon-orders">
+                    <i class="fa-solid fa-boxes-packing"></i>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <h4>Thiết Bị Trong Kho</h4>
+                    <div class="kpi-value" id="kpiProductsCount">5 mẫu</div>
+                    <div class="kpi-sub">
+                        <i class="fa-solid fa-check"></i> Đang hoạt động kinh doanh
+                    </div>
+                </div>
+                <div class="kpi-icon-wrap icon-inventory">
+                    <i class="fa-solid fa-kitchen-set"></i>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <h4>Tài Khoản Hệ Thống</h4>
+                    <div class="kpi-value" id="kpiUserCount">4 thành viên</div>
+                    <div class="kpi-sub" style="color: #8B5CF6;">
+                        <i class="fa-solid fa-crown"></i> 3 khách hàng VIP
+                    </div>
+                </div>
+                <div class="kpi-icon-wrap icon-users">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="admin-nav-tabs">
+            <button class="admin-tab-btn active" onclick="switchAdminTab('tab-products', this)">
+                <i class="fa-solid fa-cubes-stacked"></i>
+                <span>Kho Thiết Bị Gia Dụng</span>
+                <span class="tab-count-badge" id="tabProductsBadge">5</span>
+            </button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('tab-orders', this)">
+                <i class="fa-solid fa-receipt"></i>
+                <span>Quản Lý Đơn Hàng</span>
+                <span class="tab-count-badge" id="tabOrdersBadge">4</span>
+            </button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('tab-users', this)">
+                <i class="fa-solid fa-users-gear"></i>
+                <span>Quản Lý Người Dùng & Phân Quyền</span>
+                <span class="tab-count-badge" id="tabUsersBadge">4</span>
+            </button>
+            <button class="admin-tab-btn" id="tabChatBtn" onclick="switchAdminTab('tab-chat', this)">
+                <i class="fa-solid fa-comments"></i>
+                <span>Tin Nhắn Khách Hàng</span>
+                <span class="tab-count-badge" id="tabChatBadge"
+                    style="background: #EF4444; color: #fff; display: none;">0</span>
+            </button>
+            <button class="admin-tab-btn" id="tabReviewsBtn" onclick="switchAdminTab('tab-reviews', this)">
+                <i class="fa-solid fa-star-half-stroke" style="color: #F59E0B;"></i>
+                <span>Quản Lý Đánh Giá</span>
+                <span class="tab-count-badge" id="tabReviewsBadge">0</span>
+            </button>
+        </div>
+
+        <!-- TAB 1: PRODUCTS INVENTORY -->
+        <div id="tab-products" class="tab-panel active">
+            <div class="admin-table-card">
+                <div class="table-card-header">
+                    <h3 class="table-card-title">
+                        <i class="fa-solid fa-boxes-stacked text-gold"></i> Danh Sách Thiết Bị Gia Dụng (Có Thể Chỉnh
+                        Sửa & Xóa)
+                    </h3>
+                    <div class="table-actions">
+                        <button class="btn btn-gold" style="padding: 8px 16px; font-size: 0.8125rem;"
+                            onclick="openAddProductModal()">
+                            <i class="fa-solid fa-plus"></i> Thêm Thiết Bị
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên Thiết Bị</th>
+                                <th>Danh Mục</th>
+                                <th>Đơn Giá</th>
+                                <th>Tồn Kho</th>
+                                <th>Đã Bán</th>
+                                <th>Tình Trạng</th>
+                                <th>Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: ORDERS -->
+        <div id="tab-orders" class="tab-panel">
+            <div class="admin-table-card">
+                <div class="table-card-header">
+                    <h3 class="table-card-title">
+                        <i class="fa-solid fa-list-check text-gold"></i> Quản Lý & Chỉnh Sửa Trạng Thái Đơn Hàng
+                    </h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Mã Đơn</th>
+                                <th>Khách Hàng</th>
+                                <th>Thiết Bị Đặt Mua</th>
+                                <th>Tổng Tiền</th>
+                                <th>Thanh Toán</th>
+                                <th>Trạng Thái</th>
+                                <th>Ghi Chú</th>
+                                <th>Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: USERS & PERMISSIONS -->
+        <div id="tab-users" class="tab-panel">
+            <div class="admin-table-card">
+                <div class="table-card-header">
+                    <h3 class="table-card-title">
+                        <i class="fa-solid fa-user-shield text-gold"></i> Quản Lý & Chỉnh Sửa Thông Tin Người Dùng
+                    </h3>
+                    <div class="table-actions">
+                        <button class="btn btn-gold" style="padding: 6px 14px; font-size: 0.8125rem;"
+                            onclick="openAddUserPrompt()">
+                            <i class="fa-solid fa-user-plus"></i> Thêm Tài Khoản
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Họ & Tên</th>
+                                <th>Email</th>
+                                <th>Số Điện Thoại</th>
+                                <th>Vai Trò (Role)</th>
+                                <th>Trạng Thái</th>
+                                <th>Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: LIVE CHAT SUPPORT -->
+        <div id="tab-chat" class="tab-panel">
+            <div class="admin-table-card" style="padding: 0; overflow: hidden; border-radius: 16px;">
+                <div class="table-card-header"
+                    style="padding: 16px 24px; background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);">
+                    <h3 class="table-card-title">
+                        <i class="fa-solid fa-headset text-gold"></i> Trung Tâm Tin Nhắn Khách Hàng (Live Chat Support)
+                    </h3>
+                    <div style="font-size: 13px; color: #64748B;">
+                        <i class="fa-solid fa-circle" style="font-size: 7px; color: #10B981;"></i> Tự động đồng bộ tin
+                        nhắn thời gian thực
+                    </div>
+                </div>
+
+                <div style="display: flex; min-height: 540px; border-top: 1px solid #E2E8F0;">
+                    <!-- Cột danh sách khách hàng bên trái (320px) -->
+                    <div
+                        style="width: 320px; border-right: 1px solid #E2E8F0; background: #FAFBFD; display: flex; flex-direction: column;">
+                        <div style="padding: 14px; border-bottom: 1px solid #E2E8F0; background: #FFFFFF;">
+                            <div style="position: relative;">
+                                <i class="fa-solid fa-magnifying-glass"
+                                    style="position: absolute; left: 12px; top: 11px; color: #94A3B8; font-size: 13px;"></i>
+                                <input type="text" id="adminChatSearchInput" placeholder="Tìm tên khách, số ĐT..."
+                                    style="width: 100%; box-sizing: border-box; padding: 8px 12px 8px 34px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; outline: none;">
+                            </div>
+                        </div>
+                        <div id="adminChatConvList" style="flex: 1; overflow-y: auto; max-height: 480px;">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Cột tin nhắn và trả lời bên phải -->
+                    <div style="flex: 1; display: flex; flex-direction: column; background: #FFFFFF;">
+                        <!-- Header thông tin khách -->
+                        <div id="adminChatActiveHeader"
+                            style="padding: 14px 20px; border-bottom: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: space-between; background: #FFFFFF;">
+                            <span style="color: #94A3B8; font-size: 13px;">Chọn một cuộc hội thoại từ danh sách bên trái
+                                để phản hồi</span>
+                        </div>
+
+                        <!-- Lịch sử tin nhắn -->
+                        <div id="adminChatActiveBody"
+                            style="flex: 1; padding: 20px; overflow-y: auto; max-height: 380px; min-height: 300px; background: #F8FAFC;">
+                            <div style="text-align: center; color: #94A3B8; padding: 40px 20px;">
+                                <i class="fa-regular fa-comments"
+                                    style="font-size: 36px; margin-bottom: 10px; opacity: 0.4;"></i>
+                                <p style="margin: 0;">Vui lòng chọn khách hàng để bắt đầu cuộc trò chuyện.</p>
+                            </div>
+                        </div>
+
+                        <!-- Cụm câu trả lời nhanh & ô nhập phản hồi -->
+                        <div id="adminChatActiveFooter"
+                            style="padding: 14px 20px; border-top: 1px solid #E2E8F0; background: #FFFFFF; display: none;">
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;">
+                                <button type="button" class="btn-table-action"
+                                    style="font-size: 11.5px; padding: 4px 10px;"
+                                    onclick="window.FamilyAdminChat.quickReply('Dạ FAMILY xin kính chào Quý khách! Em có thể tư vấn sản phẩm nào cho mình ạ?')">👋
+                                    Chào hỏi</button>
+                                <button type="button" class="btn-table-action"
+                                    style="font-size: 11.5px; padding: 4px 10px;"
+                                    onclick="window.FamilyAdminChat.quickReply('Dạ tất cả sản phẩm tại FAMILY đều được bảo hành chính hãng 24 tháng, 1 đổi 1 trong 30 ngày Quý khách nhé!')">🛡️
+                                    Bảo hành 24T</button>
+                                <button type="button" class="btn-table-action"
+                                    style="font-size: 11.5px; padding: 4px 10px;"
+                                    onclick="window.FamilyAdminChat.quickReply('Dạ đơn hàng của Quý khách đã được tiếp nhận và nhân viên sẽ liên hệ đóng gói gửi đi ngay trong ngày ạ.')">📦
+                                    Đơn hàng</button>
+                                <button type="button" class="btn-table-action"
+                                    style="font-size: 11.5px; padding: 4px 10px;"
+                                    onclick="window.FamilyAdminChat.quickReply('Dạ Quý khách có thể chuyển khoản VietQR tự động để nhận ưu đãi miễn phí giao hàng toàn quốc ạ.')">💳
+                                    VietQR FreeShip</button>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" id="adminChatInputText"
+                                    placeholder="Nhập câu trả lời cho khách hàng... (Nhấn Enter để gửi)"
+                                    style="flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13.5px; outline: none;">
+                                <button type="button" id="adminChatSendBtn" class="btn btn-gold"
+                                    style="padding: 10px 20px; font-size: 13px; font-weight: 700; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;">
+                                    <i class="fa-solid fa-paper-plane"></i> Trả Lời
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: QUẢN LÝ ĐÁNH GIÁ KHÁCH HÀNG & VIP (REVIEWS MANAGEMENT) -->
+        <div id="tab-reviews" class="tab-panel">
+            <div class="admin-table-card">
+                <div class="table-card-header" style="flex-wrap: wrap; gap: 14px;">
+                    <div>
+                        <h3 class="table-card-title">
+                            <i class="fa-solid fa-star-half-stroke text-gold"></i> Quản Lý & Duyệt Đánh Giá Khách Hàng
+                            (Reviews & Testimonials)
+                        </h3>
+                        <p style="margin: 4px 0 0 0; font-size: 0.8125rem; color: #64748B;">
+                            Duyệt hiển thị các đánh giá từ Trang Chủ, ẩn các đánh giá không phù hợp hoặc tự tạo đánh giá
+                            VIP chính thức.
+                        </p>
+                    </div>
+                    <div class="table-actions" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <div style="position: relative;">
+                            <input type="text" id="adminReviewSearchInput"
+                                placeholder="Tìm tên khách, sản phẩm, nội dung..." oninput="filterAdminReviews()"
+                                style="padding: 8px 12px 8px 32px; font-size: 0.8125rem; border: 1px solid #CBD5E1; border-radius: 8px; width: 220px; outline: none;">
+                            <i class="fa-solid fa-magnifying-glass"
+                                style="position: absolute; left: 10px; top: 10px; font-size: 0.75rem; color: #94A3B8;"></i>
+                        </div>
+                        <select id="adminReviewStatusFilter" onchange="filterAdminReviews()"
+                            style="padding: 8px 12px; font-size: 0.8125rem; border: 1px solid #CBD5E1; border-radius: 8px; outline: none; background: #fff;">
+                            <option value="all">Tất cả trạng thái</option>
+                            <option value="approved">Đã duyệt (Hiển thị trang chủ)</option>
+                            <option value="hidden">Đang ẩn</option>
+                        </select>
+                        <button type="button" class="btn btn-gold"
+                            style="padding: 8px 16px; font-size: 0.8125rem; display: inline-flex; align-items: center; gap: 6px;"
+                            onclick="openAddReviewModal()">
+                            <i class="fa-solid fa-plus"></i> Thêm Đánh Giá VIP
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="admin-table" id="reviewsTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 60px;">ID</th>
+                                <th>Khách Hàng</th>
+                                <th>Sản Phẩm Trải Nghiệm</th>
+                                <th style="width: 130px;">Đánh Giá</th>
+                                <th>Nội Dung Nhận Xét</th>
+                                <th style="width: 110px;">Thời Gian</th>
+                                <th style="width: 120px;">Trạng Thái</th>
+                                <th style="width: 150px;">Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reviewsTableBody">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- =========================================================================
+         MODAL 1: CHỈNH SỬA THIẾT BỊ GIA DỤNG (EDIT PRODUCT MODAL)
+         ========================================================================= -->
+    <div class="admin-modal-overlay" id="editProductModal">
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <h3><i class="fa-solid fa-pen-to-square text-gold"></i> Chỉnh Sửa Thiết Bị Gia Dụng</h3>
+                <button type="button" class="admin-modal-close" onclick="closeModal('editProductModal')">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="handleSaveProduct(event)">
+                <input type="hidden" id="editProdId">
+                <div class="admin-modal-body">
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Tên thiết bị gia dụng</label>
+                        <input type="text" id="editProdName" class="admin-form-input" required>
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Hình ảnh thiết bị (Đường dẫn ảnh hoặc chọn ảnh mẫu)</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="text" id="editProdImage" class="admin-form-input"
+                                placeholder="public/images/products/air_fryer.jpg"
+                                oninput="previewEditImage(this.value)">
+                            <img id="editProdImgPreview" src="" alt="Preview"
+                                style="width: 44px; height: 44px; border-radius: 8px; object-fit: cover; border: 1px solid #CBD5E1; display: none;">
+                        </div>
+                        <div style="display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap;">
+                            <button type="button" class="btn-preset-img"
+                                onclick="setEditImagePreset('public/images/products/air_fryer.jpg')">Nồi chiên
+                                OLED</button>
+                            <button type="button" class="btn-preset-img"
+                                onclick="setEditImagePreset('public/images/products/smart_fridge.jpg')">Tủ lạnh
+                                Smart</button>
+                            <button type="button" class="btn-preset-img"
+                                onclick="setEditImagePreset('public/images/products/induction_hob.jpg')">Bếp từ
+                                Inverter</button>
+                            <button type="button" class="btn-preset-img"
+                                onclick="setEditImagePreset('public/images/products/rice_cooker.jpg')">Nồi cơm
+                                IH</button>
+                            <button type="button" class="btn-preset-img"
+                                onclick="setEditImagePreset('public/images/products/robot_vacuum.jpg')">Robot hút
+                                bụi</button>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Danh mục thiết bị</label>
+                            <select id="editProdCategory" class="admin-form-select" required>
+                                <option value="Thiết Bị Nấu Nướng">Thiết Bị Nấu Nướng (Nồi chiên / Bếp / Nồi cơm)
+                                </option>
+                                <option value="Bảo Quản & Làm Mát">Bảo Quản & Làm Mát (Tủ lạnh)</option>
+                                <option value="Làm Sạch Thông Minh">Làm Sạch Thông Minh (Robot hút bụi)</option>
+                                <option value="Chăm Sóc Không Khí">Chăm Sóc Không Khí (Máy lọc không khí)</option>
+                            </select>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Tình trạng kho</label>
+                            <select id="editProdStatus" class="admin-form-select" required>
+                                <option value="Còn hàng">Còn hàng</option>
+                                <option value="Hết hàng">Hết hàng</option>
+                                <option value="Sắp về">Sắp về</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Đơn giá (VNĐ) - Cho phép nhập bất kỳ mức giá nào</label>
+                            <input type="number" id="editProdPrice" class="admin-form-input" required min="0" step="any"
+                                placeholder="Nhập bất kỳ giá nào (VD: 500, 1500, 4890000...)">
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Số lượng tồn kho</label>
+                            <input type="number" id="editProdStock" class="admin-form-input" required min="0">
+                        </div>
+                    </div>
+
+                    <!-- HÀNG NGANG 5 CỘT THÔNG SỐ VÀ MÔ TẢ (GỌN GÀNG TRÊN 1 HÀNG) -->
+                    <div class="form-grid-5">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label"><i class="fa-solid fa-tag text-gold"></i> Thương
+                                hiệu</label>
+                            <input type="text" id="editProdBrand" class="admin-form-input"
+                                placeholder="Ví dụ: Philips, Sunhouse, FAMILY...">
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-form-label"><i class="fa-solid fa-earth-americas text-gold"></i> Xuất
+                                xứ</label>
+                            <input type="text" id="editProdOrigin" class="admin-form-input"
+                                placeholder="Ví dụ: Việt Nam, Đức, Nhật Bản...">
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-form-label"><i class="fa-solid fa-gem text-gold"></i> Chất liệu chế
+                                tạo</label>
+                            <input type="text" id="editProdMaterial" class="admin-form-input"
+                                placeholder="Ví dụ: Thép không gỉ 304, Lòng nồi Ceramic...">
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-form-label"><i class="fa-solid fa-bolt text-gold"></i> Công dụng & Tính
+                                năng</label>
+                            <input type="text" id="editProdUsage" class="admin-form-input"
+                                placeholder="Ví dụ: Chiên nướng không dầu 360°, rã đông...">
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-form-label"><i class="fa-solid fa-file-lines text-gold"></i> Mô tả / Ghi
+                                chú</label>
+                            <input type="text" id="editProdDesc" class="admin-form-input"
+                                placeholder="Mô tả tóm tắt tính năng...">
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-modal-footer">
+                    <button type="button" class="btn-table-action" onclick="closeModal('editProductModal')">Hủy
+                        bỏ</button>
+                    <button type="submit" class="btn btn-gold" style="padding: 10px 20px;">Lưu Thay Đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL 2: THÊM THIẾT BỊ MỚI (ADD PRODUCT MODAL)
+         ========================================================================= -->
+    <div class="admin-modal-overlay" id="addProductModal">
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <h3><i class="fa-solid fa-plus text-gold"></i> Thêm Thiết Bị Gia Dụng Mới</h3>
+                <button type="button" class="admin-modal-close" onclick="closeModal('addProductModal')">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="handleAddProduct(event)">
+                <div class="admin-modal-body">
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Tên thiết bị gia dụng</label>
+                        <input type="text" id="addProdName" class="admin-form-input"
+                            placeholder="Ví dụ: Máy sấy quần áo HeatPump 10kg" required>
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Hình ảnh thiết bị (Đường dẫn ảnh hoặc chọn ảnh mẫu)</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="text" id="addProdImage" class="admin-form-input"
+                                placeholder="public/images/products/air_fryer.jpg"
+                                value="public/images/products/air_fryer.jpg" oninput="previewAddImage(this.value)">
+                            <img id="addProdImgPreview" src="public/images/products/air_fryer.jpg" alt="Preview"
+                                style="width: 44px; height: 44px; border-radius: 8px; object-fit: cover; border: 1px solid #CBD5E1; display: block;">
+                        </div>
+                        <div style="display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap;">
+                            <button type="button" class="btn-preset-img"
+                                onclick="setAddImagePreset('public/images/products/air_fryer.jpg')">Nồi chiên
+                                OLED</button>
+                            <button type="button" class="btn-preset-img"
+                                onclick="setAddImagePreset('public/images/products/smart_fridge.jpg')">Tủ lạnh
+                                Smart</button>
+                            <button type="button" class="btn-preset-img"
+                                onclick="setAddImagePreset('public/images/products/induction_hob.jpg')">Bếp từ
+                                Inverter</button>
+                            <button type="button" class="btn-preset-img"
+                                onclick="setAddImagePreset('public/images/products/rice_cooker.jpg')">Nồi cơm
+                                IH</button>
+                            <button type="button" class="btn-preset-img"
+                                onclick="setAddImagePreset('public/images/products/robot_vacuum.jpg')">Robot hút
+                                bụi</button>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Danh mục thiết bị</label>
+                            <select id="addProdCategory" class="admin-form-select" required>
+                                <option value="Thiết Bị Nấu Nướng">Thiết Bị Nấu Nướng (Nồi chiên / Bếp / Nồi cơm)
+                                </option>
+                                <option value="Bảo Quản & Làm Mát">Bảo Quản & Làm Mát (Tủ lạnh)</option>
+                                <option value="Làm Sạch Thông Minh">Làm Sạch Thông Minh (Robot hút bụi)</option>
+                                <option value="Chăm Sóc Không Khí">Chăm Sóc Không Khí (Máy lọc không khí)</option>
+                            </select>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Tình trạng kho</label>
+                            <select id="addProdStatus" class="admin-form-select" required>
+                                <option value="Còn hàng">Còn hàng</option>
+                                <option value="Hết hàng">Hết hàng</option>
+                                <option value="Sắp về">Sắp về</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Đơn giá (VNĐ) - Cho phép nhập bất kỳ mức giá nào</label>
+                            <input type="number" id="addProdPrice" class="admin-form-input"
+                                placeholder="Nhập bất kỳ giá nào (VD: 500, 1500, 18500000...)" required min="0"
+                                step="any">
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Số lượng nhập kho</label>
+                            <input type="number" id="addProdStock" class="admin-form-input" value="15" required min="0">
+                        </div>
+                    </div>
+
+                    <!-- HÀNG NGANG 5 CỘT THÔNG SỐ VÀ MÔ TẢ (GỌN GÀNG TRÊN 1 HÀNG) -->
+                    <div class="form-grid-5">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label"><i class="fa-solid fa-tag text-gold"></i> Thương
+                                hiệu</label>
+                            <input type="text" id="addProdBrand" class="admin-form-input"
+                                placeholder="Ví dụ: Philips, Sunhouse, FAMILY...">
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-form-label"><i class="fa-solid fa-earth-americas text-gold"></i> Xuất
+                                xứ</label>
+                            <input type="text" id="addProdOrigin" class="admin-form-input"
+                                placeholder="Ví dụ: Việt Nam, Đức, Nhật Bản...">
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-form-label"><i class="fa-solid fa-gem text-gold"></i> Chất liệu chế
+                                tạo</label>
+                            <input type="text" id="addProdMaterial" class="admin-form-input"
+                                placeholder="Ví dụ: Thép không gỉ 304, Lòng nồi Ceramic...">
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-form-label"><i class="fa-solid fa-bolt text-gold"></i> Công dụng & Tính
+                                năng</label>
+                            <input type="text" id="addProdUsage" class="admin-form-input"
+                                placeholder="Ví dụ: Chiên nướng không dầu 360°, rã đông...">
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-form-label"><i class="fa-solid fa-file-lines text-gold"></i> Mô tả / Ghi
+                                chú</label>
+                            <input type="text" id="addProdDesc" class="admin-form-input"
+                                placeholder="Mô tả tóm tắt tính năng...">
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-modal-footer">
+                    <button type="button" class="btn-table-action" onclick="closeModal('addProductModal')">Hủy
+                        bỏ</button>
+                    <button type="submit" class="btn btn-gold" style="padding: 10px 20px;">Thêm Vào Kho</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL 3: CẬP NHẬT TRẠNG THÁI ĐƠN HÀNG (EDIT ORDER MODAL)
+         ========================================================================= -->
+    <div class="admin-modal-overlay" id="editOrderModal">
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <h3><i class="fa-solid fa-truck-fast text-gold"></i> Cập Nhật Đơn Hàng <span id="editOrderCode"></span>
+                </h3>
+                <button type="button" class="admin-modal-close" onclick="closeModal('editOrderModal')">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="handleSaveOrder(event)">
+                <input type="hidden" id="editOrderId">
+                <div class="admin-modal-body">
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Trạng thái vận chuyển & xử lý</label>
+                        <select id="editOrderStatus" class="admin-form-select" required>
+                            <option value="Chờ xác nhận">Chờ xác nhận (Mới đặt)</option>
+                            <option value="Đang giao hàng">Đang giao hàng (Đã xuất kho)</option>
+                            <option value="Đã hoàn thành">Đã hoàn thành (Khách đã nhận)</option>
+                            <option value="Đã hủy">Đã hủy đơn hàng</option>
+                        </select>
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Ghi chú xử lý / Mã vận đơn</label>
+                        <textarea id="editOrderNotes" class="admin-form-textarea" rows="3"
+                            placeholder="Nhập ghi chú giao nhận, lịch hẹn lắp đặt..."></textarea>
+                    </div>
+                </div>
+                <div class="admin-modal-footer">
+                    <button type="button" class="btn-table-action" onclick="closeModal('editOrderModal')">Hủy
+                        bỏ</button>
+                    <button type="submit" class="btn btn-gold" style="padding: 10px 20px;">Cập Nhật Đơn Hàng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL 4: CHỈNH SỬA THÔNG TIN NGƯỜI DÙNG (EDIT USER MODAL)
+         ========================================================================= -->
+    <div class="admin-modal-overlay" id="editUserModal">
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <h3><i class="fa-solid fa-user-pen text-gold"></i> Chỉnh Sửa Thông Tin Tài Khoản</h3>
+                <button type="button" class="admin-modal-close" onclick="closeModal('editUserModal')">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="handleSaveUser(event)">
+                <input type="hidden" id="editUserId">
+                <div class="admin-modal-body">
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Họ và tên thành viên</label>
+                        <input type="text" id="editUserName" class="admin-form-input" required>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Địa chỉ Email</label>
+                            <input type="email" id="editUserEmail" class="admin-form-input" required>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Số điện thoại</label>
+                            <input type="tel" id="editUserPhone" class="admin-form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Phân quyền (Vai trò)</label>
+                            <select id="editUserRole" class="admin-form-select" required>
+                                <option value="user">Khách Hàng (User)</option>
+                                <option value="admin">Quản Trị Viên (Admin)</option>
+                            </select>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Trạng thái tài khoản</label>
+                            <select id="editUserStatus" class="admin-form-select" required>
+                                <option value="active">Hoạt động bình thường</option>
+                                <option value="inactive">Khóa tài khoản</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-modal-footer">
+                    <button type="button" class="btn-table-action" onclick="closeModal('editUserModal')">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-gold" style="padding: 10px 20px;">Lưu Thông Tin</button>
+                </div>
+            </form>
+            <!-- =========================================================================
+         MODAL 5: THÊM & CHỈNH SỬA ĐÁNH GIÁ (ADMIN REVIEW MODAL)
+         ========================================================================= -->
+            <div class="admin-modal-overlay" id="adminReviewModal">
+                <div class="admin-modal-content" style="max-width: 600px;">
+                    <div class="admin-modal-header">
+                        <h3><i class="fa-solid fa-star text-gold"></i> <span id="adminReviewModalTitle">Thêm Đánh Giá
+                                VIP Mới</span></h3>
+                        <button type="button" class="admin-modal-close" onclick="closeModal('adminReviewModal')">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <form onsubmit="handleSaveAdminReview(event)">
+                        <input type="hidden" id="adminReviewId">
+                        <div class="admin-modal-body">
+                            <div class="form-grid-2">
+                                <div class="admin-form-group">
+                                    <label class="admin-form-label"><i class="fa-solid fa-user text-gold"></i> Họ & Tên
+                                        khách hàng *</label>
+                                    <input type="text" id="adminReviewUserName" class="admin-form-input" required
+                                        placeholder="Ví dụ: KTS. Trần Quang Dũng...">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label class="admin-form-label"><i class="fa-solid fa-id-badge text-gold"></i> Chức
+                                        danh / Khu vực</label>
+                                    <input type="text" id="adminReviewUserTitle" class="admin-form-input"
+                                        placeholder="Ví dụ: Kiến trúc sư nội thất, TP. HCM">
+                                </div>
+                            </div>
+
+                            <div class="form-grid-2">
+                                <div class="admin-form-group">
+                                    <label class="admin-form-label"><i class="fa-solid fa-cube text-gold"></i> Sản phẩm
+                                        đánh giá *</label>
+                                    <select id="adminReviewProductId" class="admin-form-select" required>
+                                        <!-- Populated dynamically -->
+                                    </select>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label class="admin-form-label"><i class="fa-solid fa-star text-gold"></i> Xếp hạng
+                                        số sao *</label>
+                                    <select id="adminReviewRating" class="admin-form-select" required>
+                                        <option value="5">⭐⭐⭐⭐⭐ (5 sao - Xuất sắc)</option>
+                                        <option value="4">⭐⭐⭐⭐ (4 sao - Rất tốt)</option>
+                                        <option value="3">⭐⭐⭐ (3 sao - Khá)</option>
+                                        <option value="2">⭐⭐ (2 sao - Tạm)</option>
+                                        <option value="1">⭐ (1 sao - Kém)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="admin-form-group">
+                                <label class="admin-form-label"><i class="fa-solid fa-image text-gold"></i> Avatar Khách
+                                    Hàng (URL ảnh hoặc để trống)</label>
+                                <input type="text" id="adminReviewAvatar" class="admin-form-input"
+                                    placeholder="https://images.unsplash.com/... (Để trống tự tạo ảnh VIP)">
+                            </div>
+
+                            <div class="admin-form-group">
+                                <label class="admin-form-label"><i class="fa-solid fa-comment-dots text-gold"></i> Nội
+                                    dung đánh giá (Tối thiểu 3 ký tự) *</label>
+                                <textarea id="adminReviewComment" class="admin-form-textarea" rows="4" required
+                                    minlength="3" placeholder="Nhập cảm nhận của khách hàng về sản phẩm..."></textarea>
+                            </div>
+
+                            <div class="admin-form-group">
+                                <label class="admin-form-label"><i class="fa-solid fa-toggle-on text-gold"></i> Trạng
+                                    thái kiểm duyệt</label>
+                                <select id="adminReviewStatus" class="admin-form-select">
+                                    <option value="approved">Đã duyệt (Hiển thị ngay trên Trang Chủ)</option>
+                                    <option value="hidden">Đang ẩn (Không xuất hiện trên Trang Chủ)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="admin-modal-footer">
+                            <button type="button" class="btn-table-action" onclick="closeModal('adminReviewModal')">Hủy
+                                bỏ</button>
+                            <button type="submit" class="btn btn-gold" style="padding: 10px 22px;">Lưu Đánh Giá</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Banner Modal -->
+            <div class="admin-modal-overlay" id="bannerModal">
+                <div class="admin-modal-content" style="max-width: 500px;">
+                    <div class="admin-modal-header">
+                        <h3><i class="fa-solid fa-images text-gold"></i> Quản lý thứ tự Banner</h3>
+                        <button type="button" class="admin-modal-close" onclick="closeModal('bannerModal')">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <form id="bannerForm" onsubmit="event.preventDefault(); submitBannerModal();">
+                        <div class="admin-modal-body">
+                            <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Tải lên các ảnh banner bạn muốn thay đổi. Nếu để trống, banner cũ tại vị trí đó sẽ được giữ nguyên.</p>
+                            <div class="admin-form-group">
+                                <label class="admin-form-label">Banner 1 (Đầu tiên)</label>
+                                <input type="file" class="admin-form-input" id="banner_1" accept="image/*">
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-form-label">Banner 2 (Tiếp theo)</label>
+                                <input type="file" class="admin-form-input" id="banner_2" accept="image/*">
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-form-label">Banner 3 (Cuối cùng)</label>
+                                <input type="file" class="admin-form-input" id="banner_3" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="admin-modal-footer">
+                            <button type="button" class="btn-table-action" onclick="closeModal('bannerModal')">Hủy bỏ</button>
+                            <button type="submit" class="btn btn-gold" style="padding: 10px 22px;">Lưu Thay Đổi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <script>
+                // Sample datasets initialized with real products from system
+                let demoProducts = [
+                    { id: 18, name: 'bếp từ Fixco', category: 'Đồ dùng Nhà bếp', price: 5000000, stock: 20, sold: 0, status: 'Còn hàng', description: 'Thương hiệu: Fix, Xuất xứ: Portugo', image: 'storage/products/Ld8rBOwgJdFvwKzEqTiLwGJ8FdErDreEKk7ZSKDO.jpg' },
+                    { id: 17, name: 'bếp từ INETFIX', category: 'Đồ dùng Nhà bếp', price: 2300000, stock: 8, sold: 0, status: 'Còn hàng', description: 'Thương hiệu: FAMILY, Xuất xứ: Bỉ', image: 'storage/products/0gqkjhAVXBy7pzW1jNIBljgwO0Q5XTq9iCRrPktC.jpg' },
+                    { id: 16, name: 'bếp từ Congo', category: 'Đồ dùng Nhà bếp', price: 4000000, stock: 12, sold: 0, status: 'Còn hàng', description: 'Thương hiệu: Congo, Xuất xứ: Hà Lan', image: 'storage/products/7mfa3x80Mk8pFnYOofcUxVWOa9vKdZ7g9FirN8gH.jpg' },
+                    { id: 15, name: 'Tủ Lạnh Smart French-Door 4 Cánh 568L', category: 'Bảo Quản & Làm Mát', price: 32990000, stock: 9, sold: 26, status: 'Còn hàng', description: 'Cửa 4 cánh độc lập, màn hình cảm ứng kết nối WiFi, cấp đông mềm chuẩn -3 độ C.', image: 'public/images/products/smart_fridge.jpg' },
+                    { id: 13, name: 'Robot Hút Bụi Lau Nhà Tự Động FAMILY S9 Pro', category: 'Làm Sạch Thông Minh', price: 1500, stock: 24, sold: 89, status: 'Còn hàng', description: 'Hệ thống radar LiDAR 3D, lực hút cực đại 6000Pa tự động giặt sấy giẻ kháng khuẩn.', image: 'public/images/products/robot_vacuum.jpg' },
+                    { id: 12, name: 'Nồi Cơm Áp Suất Cao Tần IH FAMILY 1.8L', category: 'Thiết Bị Nấu Nướng', price: 6850000, stock: 20, sold: 112, status: 'Còn hàng', description: 'Gia nhiệt đa chiều IH cảm ứng từ Nhật Bản, lòng nồi niêu 8 lớp phủ kim cương.', image: 'public/images/products/rice_cooker.jpg' },
+                    { id: 11, name: 'Bếp Từ Đôi Inverter Booster 4400W Gold', category: 'Thiết Bị Nấu Nướng', price: 10000, stock: 16, sold: 64, status: 'Còn hàng', description: 'Mặt kính Schott Ceran vát cạnh mạ vàng, công nghệ Booster 4400W nấu siêu tốc.', image: 'public/images/products/induction_hob.jpg' },
+                    { id: 9, name: 'Nồi Chiên Không Dầu FAMILY Pro OLED 12L', category: 'Thiết Bị Nấu Nướng', price: 4890000, stock: 32, sold: 148, status: 'Còn hàng', description: 'Công nghệ nhiệt đối lưu Dual-Heat 360 độ, màn hình cảm ứng OLED viền Gold.', image: 'public/images/products/air_fryer.jpg' },
+                    { id: 8, name: 'bếp từ', category: 'Đồ dùng Nhà bếp', price: 2000, stock: 12, sold: 0, status: 'Còn hàng', description: 'Thương hiệu : Việt Nam', image: 'public/images/products/induction_hob.jpg' },
+                    { id: 4, name: 'Bếp từ Elmix', category: 'Gia Dụng', price: 990000, stock: 6, sold: 0, status: 'Còn hàng', description: 'Thương hiệu: Elimix, Xuất xứ: Nigeria', image: 'public/images/products/induction_hob.jpg' },
+                    { id: 3, name: 'Bếp điện từ đơn Kangaroo KG20IC1', category: 'Gia Dụng', price: 1620000, stock: 5, sold: 0, status: 'Còn hàng', description: 'Thương hiệu: Kangaroo, Xuất xứ: Việt Nam, Công xuất: 7000w', image: 'public/images/products/induction_hob.jpg' },
+                    { id: 2, name: 'Nồi chiên không dầu Sunhouse SHD4030', category: 'Gia Dụng', price: 1180000, stock: 8, sold: 0, status: 'Còn hàng', description: 'Thương hiệu: Sunhouse, Xuất xứ: Việt Nam, Dung tích: 6,5 lít', image: 'public/images/products/air_fryer.jpg' },
+                    { id: 1, name: 'Nồi Chiên Không Dầu Philips HD9252/90', category: 'Đồ dùng Nhà bếp', price: 10000, stock: 9, sold: 0, status: 'Còn hàng', description: 'Thương hiệu: Philips, xuất xứ: Trung Quốc, Dung tích: 5,2 lít', image: 'public/images/products/air_fryer.jpg' }
+                ];
+
+                // Luôn nạp dữ liệu sản phẩm đã chỉnh sửa từ localStorage trước tiên để không bao giờ bị quay về giá cũ khi reload
+                try {
+                    const savedLocalProds = localStorage.getItem('family_synced_products') || localStorage.getItem('admin_products_cache');
+                    if (savedLocalProds) {
+                        const parsedProds = JSON.parse(savedLocalProds);
+                        if (Array.isArray(parsedProds) && parsedProds.length >= 8) {
+                            demoProducts = parsedProds;
+                        }
+                    }
+                } catch (e) { }
+
+                let demoOrders = [];
+
+                let demoUsers = [
+                    { id: 1, name: 'Quản Trị Viên FAMILY LUXE', email: 'admin@family.vn', phone: '0909 888 999', role: 'admin', status: 'active', isCurrent: true },
+                    { id: 2, name: 'Nguyễn Hoàng Long', email: 'khachhang@gmail.com', phone: '0912 345 678', role: 'user', status: 'active', isCurrent: false },
+                    { id: 3, name: 'Trần Thị Mai', email: 'maitran@gmail.com', phone: '0933 221 100', role: 'user', status: 'active', isCurrent: false },
+                    { id: 4, name: 'Lê Văn Cường', email: 'cuong.le@vina.vn', phone: '0988 554 433', role: 'user', status: 'active', isCurrent: false }
+                ];
+
+                // Load any users registered from front site
+                try {
+                    const registered = JSON.parse(localStorage.getItem('auraluxe_registered_users') || '[]');
+                    registered.forEach((u, idx) => {
+                        if (!demoUsers.some(existing => existing.email === u.email)) {
+                            demoUsers.push({
+                                id: demoUsers.length + 1,
+                                name: u.name,
+                                email: u.email,
+                                phone: u.phone || '0900 123 456',
+                                role: u.role || 'user',
+                                status: 'active',
+                                isCurrent: false
+                            });
+                        }
+                    });
+                } catch (e) { }
+
+                function formatCurrency(num) {
+                    return new Intl.NumberFormat('vi-VN').format(num) + ' ₫';
+                }
+
+                /* Render Products */
+                function renderProductsTable() {
+                    const tbody = document.getElementById('productsTableBody');
+                    tbody.innerHTML = '';
+                    demoProducts.forEach(p => {
+                        const tr = document.createElement('tr');
+                        const statusBadge = p.status === 'Còn hàng'
+                            ? `<span class="status-badge status-completed"><i class="fa-solid fa-check"></i> Còn hàng</span>`
+                            : (p.status === 'Hết hàng' ? `<span class="status-badge status-cancelled">Hết hàng</span>` : `<span class="status-badge status-pending">${p.status}</span>`);
+
+                        tr.innerHTML = `
+                    <td><strong>#${p.id}</strong></td>
+                    <td>
+                        <div style="font-weight: 700; color: #0F172A;">${p.name}</div>
+                        <div style="font-size: 0.75rem; color: #9A7B38; font-weight: 600; margin: 2px 0;">
+                            <i class="fa-solid fa-tag"></i> ${p.brand || 'Chính hãng'} &bull; <i class="fa-solid fa-earth-americas"></i> ${p.origin || 'Việt Nam'}
+                        </div>
+                        <small style="color: #64748B;">${p.material ? 'Chất liệu: ' + p.material : (p.description || '')}</small>
+                    </td>
+                    <td><span style="color: #475569; font-weight: 500;">${p.category}</span></td>
+                    <td><strong class="text-gold">${formatCurrency(p.price)}</strong></td>
+                    <td><span style="font-weight: 700; color: #0F172A;">${p.stock} chiếc</span></td>
+                    <td><span style="color: #10B981; font-weight: 600;">${p.sold} chiếc</span></td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <div style="display: flex; gap: 6px;">
+                            <button type="button" class="btn-table-action btn-edit" onclick="openEditProductModal(${p.id})">
+                                <i class="fa-regular fa-pen-to-square"></i> Chỉnh sửa
+                            </button>
+                            <button type="button" class="btn-table-action btn-delete" onclick="deleteProduct(${p.id})" title="Xóa thiết bị">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                        tbody.appendChild(tr);
+                    });
+
+                    document.getElementById('tabProductsBadge').innerText = demoProducts.length;
+                    document.getElementById('kpiProductsCount').innerText = demoProducts.length + ' mẫu';
+                }
+
+                /* Render Orders */
+                function renderOrdersTable() {
+                    const tbody = document.getElementById('ordersTableBody');
+                    tbody.innerHTML = '';
+                    let pendingCount = 0;
+                    let totalRev = 0;
+
+                    demoOrders.forEach(o => {
+                        if (o.status === 'Chờ xác nhận') pendingCount++;
+                        if (o.status !== 'Đã hủy') totalRev += o.amount;
+
+                        const tr = document.createElement('tr');
+                        let statusBadge = `<span class="status-badge status-shipping">${o.status}</span>`;
+                        if (o.status === 'Đã hoàn thành') statusBadge = `<span class="status-badge status-completed">${o.status}</span>`;
+                        if (o.status === 'Chờ xác nhận') statusBadge = `<span class="status-badge status-pending">${o.status}</span>`;
+                        if (o.status === 'Đã hủy') statusBadge = `<span class="status-badge status-cancelled">${o.status}</span>`;
+
+                        tr.innerHTML = `
+                    <td><strong class="text-gold">${o.code}</strong></td>
+                    <td>
+                        <div style="font-weight: 600; color: #0F172A;">${o.customer}</div>
+                        <small style="color: #64748B;">${o.phone}</small>
+                    </td>
+                    <td>${o.product}</td>
+                    <td><strong style="color: #0F172A;">${formatCurrency(o.amount)}</strong></td>
+                    <td><span style="font-size: 0.8125rem; color: #475569;">${o.payment}</span></td>
+                    <td>${statusBadge}</td>
+                    <td><small style="color: #64748B;">${o.notes || 'Không có'}</small></td>
+                    <td>
+                        <div style="display: flex; gap: 6px;">
+                            <button type="button" class="btn-table-action btn-edit" onclick="openEditOrderModal(${o.id})">
+                                <i class="fa-regular fa-pen-to-square"></i> Cập nhật
+                            </button>
+                            <button type="button" class="btn-table-action btn-delete" onclick="deleteOrder(${o.id})" title="Xóa đơn hàng">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                        tbody.appendChild(tr);
+                    });
+
+                    document.getElementById('tabOrdersBadge').innerText = demoOrders.length;
+                    document.getElementById('kpiOrdersCount').innerText = demoOrders.length + ' đơn';
+                    document.getElementById('kpiRevenue').innerText = formatCurrency(totalRev);
+                    document.getElementById('kpiPendingCount').innerHTML = `<i class="fa-solid fa-clock"></i> ${pendingCount} đơn chờ xác nhận`;
+                }
+
+                /* Render Users */
+                function renderUsersTable() {
+                    const tbody = document.getElementById('usersTableBody');
+                    tbody.innerHTML = '';
+                    demoUsers.forEach(u => {
+                        const tr = document.createElement('tr');
+                        const roleBadge = u.role === 'admin'
+                            ? `<span class="role-badge role-admin"><i class="fa-solid fa-shield-halved"></i> Quản Trị Viên</span>`
+                            : `<span class="role-badge role-user"><i class="fa-regular fa-user"></i> Khách Hàng</span>`;
+
+                        const statusBadge = u.status === 'active'
+                            ? `<span class="status-badge status-completed"><i class="fa-solid fa-circle" style="font-size: 6px;"></i> Hoạt động</span>`
+                            : `<span class="status-badge status-cancelled">Bị khóa</span>`;
+
+                        const deleteBtn = u.isCurrent
+                            ? `<span style="font-size: 0.8rem; color: #94A3B8; font-style: italic;">Đang đăng nhập</span>`
+                            : `<button class="btn-table-action btn-delete" onclick="deleteUserRow(${u.id})" title="Xóa tài khoản"><i class="fa-regular fa-trash-can"></i></button>`;
+
+                        tr.innerHTML = `
+                    <td><strong>#${u.id}</strong></td>
+                    <td>
+                        <div style="font-weight: 600; color: #0F172A;">${u.name} ${u.isCurrent ? '<span style="font-size: 0.7rem; color: #10B981; font-weight: 700;">(Bạn)</span>' : ''}</div>
+                    </td>
+                    <td><code>${u.email}</code></td>
+                    <td>${u.phone || 'Chưa có'}</td>
+                    <td>${roleBadge}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <div style="display: flex; gap: 6px; align-items: center;">
+                            <button type="button" class="btn-table-action btn-edit" onclick="openEditUserModal(${u.id})">
+                                <i class="fa-regular fa-pen-to-square"></i> Sửa
+                            </button>
+                            ${deleteBtn}
+                        </div>
+                    </td>
+                `;
+                        tbody.appendChild(tr);
+                    });
+
+                    document.getElementById('kpiUserCount').innerText = `${demoUsers.length} thành viên`;
+                    document.getElementById('tabUsersBadge').innerText = demoUsers.length;
+                }
+
+                /* MODAL OPEN & EDIT LOGIC */
+                function closeModal(id) {
+                    document.getElementById(id).classList.remove('active');
+                }
+
+                function syncProductsToClients(products) {
+                    try {
+                        localStorage.setItem('family_synced_products', JSON.stringify(products));
+                        localStorage.setItem('family_products_last_update', Date.now().toString());
+                    } catch (e) { }
+                    try {
+                        if (window.BroadcastChannel) {
+                            const bc = new BroadcastChannel('family_products_channel');
+                            bc.postMessage({ type: 'PRODUCTS_UPDATED', products: products, timestamp: Date.now() });
+                        }
+                    } catch (e) { }
+                }
+
+                function previewEditImage(val) {
+                    const img = document.getElementById('editProdImgPreview');
+                    if (img) {
+                        if (val && val.trim()) {
+                            img.src = val.trim();
+                            img.style.display = 'block';
+                        } else {
+                            img.style.display = 'none';
+                        }
+                    }
+                }
+                function setEditImagePreset(path) {
+                    const input = document.getElementById('editProdImage');
+                    if (input) {
+                        input.value = path;
+                        previewEditImage(path);
+                    }
+                }
+                function previewAddImage(val) {
+                    const img = document.getElementById('addProdImgPreview');
+                    if (img) {
+                        if (val && val.trim()) {
+                            img.src = val.trim();
+                            img.style.display = 'block';
+                        } else {
+                            img.style.display = 'none';
+                        }
+                    }
+                }
+                function setAddImagePreset(path) {
+                    const input = document.getElementById('addProdImage');
+                    if (input) {
+                        input.value = path;
+                        previewAddImage(path);
+                    }
+                }
+
+                function getApiEndpoints(path) {
+                    const list = [];
+                    const isWebgiadung = window.location.pathname.includes('/webgiadung');
+                    if (isWebgiadung) {
+                        list.push('/webgiadung' + path);
+                    } else {
+                        list.push(path);
+                    }
+                    list.push('http://localhost/webgiadung' + path);
+                    list.push('http://127.0.0.1/webgiadung' + path);
+                    list.push('http://127.0.0.1:8000' + path);
+                    list.push('http://localhost:8000' + path);
+                    return list;
+                }
+
+                async function loadProductsFromApi() {
+                    renderProductsTable();
+
+                    const candidateUrls = getApiEndpoints('/api/products');
+                    for (const url of candidateUrls) {
+                        try {
+                            const controller = new AbortController();
+                            const timeoutId = setTimeout(() => controller.abort(), 2000);
+                            const res = await fetch(url, { signal: controller.signal, headers: { 'Accept': 'application/json' } });
+                            clearTimeout(timeoutId);
+                            if (!res.ok) continue;
+                            const data = await res.json();
+                            if (data && data.success && Array.isArray(data.products) && data.products.length > 0) {
+                                const localMap = new Map();
+                                demoProducts.forEach(p => localMap.set(p.id, p));
+
+                                demoProducts = data.products.map(p => {
+                                    const localItem = localMap.get(p.id);
+                                    if (localItem && localItem._manually_edited) {
+                                        return {
+                                            ...p,
+                                            price: localItem.price,
+                                            name: localItem.name,
+                                            stock: localItem.stock,
+                                            status: localItem.status,
+                                            image: localItem.image,
+                                            _manually_edited: true
+                                        };
+                                    }
+                                    return {
+                                        id: p.id,
+                                        name: p.name,
+                                        category: p.category,
+                                        brand: p.brand || 'Chính hãng',
+                                        origin: p.origin || 'Việt Nam',
+                                        material: p.material || '',
+                                        usage: p.usage || '',
+                                        price: parseFloat(p.price),
+                                        stock: parseInt(p.stock),
+                                        sold: parseInt(p.sold || 0),
+                                        status: p.status || 'Còn hàng',
+                                        description: p.description || '',
+                                        image: p.image || 'public/images/products/air_fryer.jpg'
+                                    };
+                                });
+
+                                syncProductsToClients(demoProducts);
+                                renderProductsTable();
+                                break;
+                            }
+                        } catch (e) { }
+                    }
+                }
+
+                // Product Modal Handlers
+                function openAddProductModal() {
+                    document.getElementById('addProductModal').classList.add('active');
+                    previewAddImage(document.getElementById('addProdImage').value);
+                }
+
+                async function handleAddProduct(e) {
+                    e.preventDefault();
+                    const imageVal = document.getElementById('addProdImage') ? document.getElementById('addProdImage').value.trim() : '';
+                    const newPrice = parseFloat(document.getElementById('addProdPrice').value);
+                    const newStock = parseInt(document.getElementById('addProdStock').value) || 0;
+                    const newName = document.getElementById('addProdName').value.trim();
+                    const newCategory = document.getElementById('addProdCategory').value;
+                    const newStatus = document.getElementById('addProdStatus').value;
+                    const newBrand = document.getElementById('addProdBrand') ? document.getElementById('addProdBrand').value.trim() : '';
+                    const newOrigin = document.getElementById('addProdOrigin') ? document.getElementById('addProdOrigin').value.trim() : '';
+                    const newMaterial = document.getElementById('addProdMaterial') ? document.getElementById('addProdMaterial').value.trim() : '';
+                    const newUsage = document.getElementById('addProdUsage') ? document.getElementById('addProdUsage').value.trim() : '';
+                    const newDesc = document.getElementById('addProdDesc').value.trim();
+
+                    const newId = demoProducts.length > 0 ? Math.max(...demoProducts.map(p => p.id)) + 1 : 1;
+                    const payload = {
+                        id: newId,
+                        name: newName,
+                        category: newCategory,
+                        brand: newBrand || 'Chính hãng',
+                        origin: newOrigin || 'Việt Nam',
+                        material: newMaterial || 'Hợp kim & Nhựa ABS',
+                        usage: newUsage || '',
+                        price: isNaN(newPrice) ? 0 : newPrice,
+                        stock: newStock,
+                        status: newStatus,
+                        description: newDesc,
+                        image: imageVal || 'public/images/products/air_fryer.jpg',
+                        _manually_edited: true,
+                        sold: 0
+                    };
+
+                    demoProducts.unshift(payload);
+                    syncProductsToClients(demoProducts);
+                    renderProductsTable();
+                    closeModal('addProductModal');
+
+                    const candidateUrls = getApiEndpoints('/api/products');
+                    for (const url of candidateUrls) {
+                        try {
+                            const controller = new AbortController();
+                            const timeoutId = setTimeout(() => controller.abort(), 2000);
+                            const res = await fetch(url, {
+                                method: 'POST',
+                                signal: controller.signal,
+                                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                                body: JSON.stringify(payload)
+                            });
+                            clearTimeout(timeoutId);
+                            if (res.ok) break;
+                        } catch (err) { }
+                    }
+
+                    alert(`✅ Đã thêm thiết bị [ ${payload.name} ] (${payload.brand} - ${payload.origin}) với giá [ ${formatCurrency(payload.price)} ] vào kho thành công!`);
+                }
+
+                function openEditProductModal(id) {
+                    const p = demoProducts.find(item => item.id === id);
+                    if (!p) return;
+                    document.getElementById('editProdId').value = p.id;
+                    document.getElementById('editProdName').value = p.name;
+                    document.getElementById('editProdCategory').value = p.category;
+                    document.getElementById('editProdPrice').value = p.price;
+                    document.getElementById('editProdStock').value = p.stock;
+                    document.getElementById('editProdStatus').value = p.status;
+                    if (document.getElementById('editProdBrand')) document.getElementById('editProdBrand').value = p.brand || '';
+                    if (document.getElementById('editProdOrigin')) document.getElementById('editProdOrigin').value = p.origin || '';
+                    if (document.getElementById('editProdMaterial')) document.getElementById('editProdMaterial').value = p.material || '';
+                    if (document.getElementById('editProdUsage')) document.getElementById('editProdUsage').value = p.usage || '';
+                    document.getElementById('editProdDesc').value = p.description || '';
+                    const imgInput = document.getElementById('editProdImage');
+                    if (imgInput) {
+                        imgInput.value = p.image || 'public/images/products/air_fryer.jpg';
+                        previewEditImage(imgInput.value);
+                    }
+                    document.getElementById('editProductModal').classList.add('active');
+                }
+
+                async function handleSaveProduct(e) {
+                    e.preventDefault();
+                    const id = parseInt(document.getElementById('editProdId').value);
+                    const imageVal = document.getElementById('editProdImage') ? document.getElementById('editProdImage').value.trim() : '';
+                    const newPrice = parseFloat(document.getElementById('editProdPrice').value);
+                    const newStock = parseInt(document.getElementById('editProdStock').value) || 0;
+                    const newName = document.getElementById('editProdName').value.trim();
+                    const newCategory = document.getElementById('editProdCategory').value;
+                    const newStatus = document.getElementById('editProdStatus').value;
+                    const newBrand = document.getElementById('editProdBrand') ? document.getElementById('editProdBrand').value.trim() : '';
+                    const newOrigin = document.getElementById('editProdOrigin') ? document.getElementById('editProdOrigin').value.trim() : '';
+                    const newMaterial = document.getElementById('editProdMaterial') ? document.getElementById('editProdMaterial').value.trim() : '';
+                    const newUsage = document.getElementById('editProdUsage') ? document.getElementById('editProdUsage').value.trim() : '';
+                    const newDesc = document.getElementById('editProdDesc').value.trim();
+
+                    const payload = {
+                        id: id,
+                        name: newName,
+                        category: newCategory,
+                        brand: newBrand || 'Chính hãng',
+                        origin: newOrigin || 'Việt Nam',
+                        material: newMaterial || 'Hợp kim & Nhựa ABS',
+                        usage: newUsage || '',
+                        price: isNaN(newPrice) ? 0 : newPrice,
+                        stock: newStock,
+                        status: newStatus,
+                        description: newDesc,
+                        image: imageVal || 'public/images/products/air_fryer.jpg',
+                        _manually_edited: true
+                    };
+
+                    // 1. CẬP NHẬT NGAY VÀO BỘ NHỚ VÀ LOCALSTORAGE (Không bao giờ mất giá khi F5)
+                    const p = demoProducts.find(item => item.id === id);
+                    if (p) {
+                        Object.assign(p, payload);
+                    } else {
+                        demoProducts.unshift({ ...payload, sold: 0 });
+                    }
+                    syncProductsToClients(demoProducts);
+                    renderProductsTable();
+                    closeModal('editProductModal');
+
+                    // 2. GỬI TỚI BACKEND API (thử qua localhost / port 80 / port 8000 / relative)
+                    const candidateUrls = getApiEndpoints(`/api/products/${id}`);
+                    let backendSuccess = false;
+                    for (const url of candidateUrls) {
+                        try {
+                            const controller = new AbortController();
+                            const timeoutId = setTimeout(() => controller.abort(), 2000);
+                            const res = await fetch(url, {
+                                method: 'PUT',
+                                signal: controller.signal,
+                                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                                body: JSON.stringify(payload)
+                            });
+                            clearTimeout(timeoutId);
+                            if (res.ok) {
+                                const data = await res.json();
+                                if (data && data.success) {
+                                    backendSuccess = true;
+                                    break;
+                                }
+                            }
+                        } catch (err) { }
+                    }
+
+                    alert(`✅ Đã lưu giá [ ${formatCurrency(payload.price)} ] cho thiết bị [ ${payload.name} ] thành công!\nGiá mới đã được lưu vĩnh viễn và đồng bộ ngay lập tức lên Trang Chủ.`);
+                }
+
+                async function deleteProduct(id) {
+                    const p = demoProducts.find(item => item.id === id);
+                    if (p && confirm(`Bạn có chắc chắn muốn xóa thiết bị "${p.name}" khỏi danh mục?`)) {
+                        demoProducts = demoProducts.filter(item => item.id !== id);
+                        syncProductsToClients(demoProducts);
+                        renderProductsTable();
+
+                        const candidateUrls = getApiEndpoints(`/api/products/${id}`);
+                        for (const url of candidateUrls) {
+                            try {
+                                const controller = new AbortController();
+                                const timeoutId = setTimeout(() => controller.abort(), 2000);
+                                const res = await fetch(url, { method: 'DELETE', signal: controller.signal, headers: { 'Accept': 'application/json' } });
+                                clearTimeout(timeoutId);
+                                if (res.ok) break;
+                            } catch (err) { }
+                        }
+
+                        alert(`Đã xóa thiết bị "${p.name}" khỏi hệ thống và tự động cập nhật Trang Chủ!`);
+                    }
+                }
+
+                // Order Modal Handlers
+                function openEditOrderModal(id) {
+                    const o = demoOrders.find(item => item.id === id);
+                    if (!o) return;
+                    document.getElementById('editOrderId').value = o.id;
+                    document.getElementById('editOrderCode').innerText = '#' + o.code;
+                    document.getElementById('editOrderStatus').value = o.status;
+                    document.getElementById('editOrderNotes').value = o.notes || '';
+                    document.getElementById('editOrderModal').classList.add('active');
+                }
+
+                function handleSaveOrder(e) {
+                    e.preventDefault();
+                    const id = parseInt(document.getElementById('editOrderId').value);
+                    const o = demoOrders.find(item => item.id === id);
+                    if (o) {
+                        o.status = document.getElementById('editOrderStatus').value;
+                        o.notes = document.getElementById('editOrderNotes').value;
+                        renderOrdersTable();
+                        closeModal('editOrderModal');
+                        alert(`Đã cập nhật trạng thái đơn hàng #${o.code} thành [ ${o.status} ]!`);
+                    }
+                }
+
+                function deleteOrder(id) {
+                    const o = demoOrders.find(item => item.id === id);
+                    if (o && confirm(`Bạn có chắc muốn xóa đơn hàng #${o.code}?`)) {
+                        demoOrders = demoOrders.filter(item => item.id !== id);
+                        renderOrdersTable();
+                    }
+                }
+
+                // User Modal Handlers
+                function openEditUserModal(id) {
+                    const u = demoUsers.find(item => item.id === id);
+                    if (!u) return;
+                    document.getElementById('editUserId').value = u.id;
+                    document.getElementById('editUserName').value = u.name;
+                    document.getElementById('editUserEmail').value = u.email;
+                    document.getElementById('editUserPhone').value = u.phone || '';
+                    document.getElementById('editUserRole').value = u.role;
+                    document.getElementById('editUserStatus').value = u.status || 'active';
+                    document.getElementById('editUserModal').classList.add('active');
+                }
+
+                function handleSaveUser(e) {
+                    e.preventDefault();
+                    const id = parseInt(document.getElementById('editUserId').value);
+                    const u = demoUsers.find(item => item.id === id);
+                    if (u) {
+                        u.name = document.getElementById('editUserName').value;
+                        u.email = document.getElementById('editUserEmail').value;
+                        u.phone = document.getElementById('editUserPhone').value;
+                        u.role = document.getElementById('editUserRole').value;
+                        u.status = document.getElementById('editUserStatus').value;
+                        renderUsersTable();
+                        closeModal('editUserModal');
+                        alert(`Đã cập nhật tài khoản [ ${u.name} ] thành công!`);
+                    }
+                }
+
+                function deleteUserRow(id) {
+                    const u = demoUsers.find(item => item.id === id);
+                    if (u && confirm(`Bạn có chắc muốn xóa tài khoản ${u.name}?`)) {
+                        demoUsers = demoUsers.filter(item => item.id !== id);
+                        renderUsersTable();
+                    }
+                }
+
+                function openAddUserPrompt() {
+                    const name = prompt('Nhập họ tên thành viên mới:');
+                    if (!name) return;
+                    const email = prompt('Nhập địa chỉ email:');
+                    if (!email) return;
+                    const newId = demoUsers.length + 1;
+                    demoUsers.push({
+                        id: newId,
+                        name: name,
+                        email: email,
+                        phone: '0900 123 456',
+                        role: 'user',
+                        status: 'active',
+                        isCurrent: false
+                    });
+                    renderUsersTable();
+                    alert(`Đã tạo tài khoản cho ${name} thành công!`);
+                }
+
+                function switchAdminTab(tabId, btnElement) {
+                    document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+                    document.querySelectorAll('.admin-tab-btn').forEach(btn => btn.classList.remove('active'));
+                    document.getElementById(tabId).classList.add('active');
+                    btnElement.classList.add('active');
+                }
+
+                function logoutAdmin() {
+                    localStorage.removeItem('auraluxe_user');
+                    alert('Đã đăng xuất khỏi tài khoản Quản trị viên!');
+                    window.location.href = 'index.html';
+                }
+
+                // Close on background click
+                window.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('admin-modal-overlay')) {
+                        e.target.classList.remove('active');
+                    }
+                });
+
+                function uploadBanner(input) {
+                    if (!input.files || input.files.length === 0) return;
+                    const formData = new FormData();
+                    
+                    for (let i = 0; i < Math.min(input.files.length, 3); i++) {
+                        formData.append('banner[]', input.files[i]);
+                    }
+
+                    fetch('/webgiadung/api/admin/banner/upload', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Cập nhật Banner thành công! Quay lại trang chủ để xem thay đổi.');
+                        } else {
+                            alert('Lỗi: ' + (data.message || 'Không thể cập nhật Banner.'));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Đã xảy ra lỗi khi tải ảnh lên.');
+                    });
+                    
+                    input.value = ''; // Reset input
+                }
+
+                function uploadLogo(input) {
+                    if (!input.files || input.files.length === 0) return;
+                    const file = input.files[0];
+                    const formData = new FormData();
+                    formData.append('logo', file);
+
+                    fetch('/webgiadung/api/admin/logo/upload', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Cập nhật Logo thành công! Quay lại trang chủ để xem thay đổi.');
+                        } else {
+                            alert('Lỗi: ' + (data.message || 'Không thể cập nhật Logo.'));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Đã xảy ra lỗi khi tải ảnh lên.');
+                    });
+                    
+                    input.value = ''; // Reset input
+                }
+
+                // Initialize all tables on load
+                loadProductsFromApi();
+                renderOrdersTable();
+                renderUsersTable();
+            </script>
+            <!-- Hệ Thống Chat Trực Tuyến Quản Trị Viên -->
+            <script src="public/js/admin-chat.js"></script>
+
+            <!-- Hệ Thống Quản Lý Đánh Giá Khách Hàng (Reviews & Testimonials) -->
+            <script src="public/js/admin-reviews.js"></script>
+</body>
+
+</html>

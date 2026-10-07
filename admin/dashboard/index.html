@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển hướng đến Quản Trị Hệ Thống - FAMILY LUXE</title>
+    <script>
+        (function() {
+            // Khi đang chạy trên Live Server (Port 5500) hoặc static preview
+            if (window.location.port === '5500' || window.location.protocol === 'file:') {
+                window.location.replace('/admin.html');
+                return;
+            }
+            // Khi chạy trên XAMPP hoặc domain
+            var isWebgiadung = window.location.pathname.includes('/webgiadung');
+            // Nếu có Apache rewrite thì Apache đã đón request, nếu rơi vào file này thì chuyển sang admin.html
+            window.location.replace(isWebgiadung ? '/webgiadung/admin.html' : '/admin.html');
+        })();
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #F8FAFC;
+            color: #1E293B;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .redirect-card {
+            background: #FFFFFF;
+            padding: 36px 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #E2E8F0;
+            max-width: 440px;
+            width: 100%;
+            text-align: center;
+        }
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #DFC07A 0%, #C5A059 100%);
+            color: #FFFFFF;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 14px rgba(197, 160, 89, 0.35);
+        }
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0 0 10px;
+            color: #0F172A;
+        }
+        p {
+            font-size: 0.9rem;
+            color: #64748B;
+            margin: 0 0 24px;
+            line-height: 1.5;
+        }
+        .btn-action {
+            display: inline-block;
+            background: linear-gradient(135deg, #DFC07A 0%, #C5A059 50%, #9B782F 100%);
+            color: #FFFFFF;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
+            transition: transform 0.15s ease;
+        }
+        .btn-action:hover {
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="redirect-card">
+        <div class="icon-box">⚡</div>
+        <h2>Đang Mở Bảng Quản Trị Hệ Thống...</h2>
+        <p>Hệ thống đang tự động điều hướng bạn đến giao diện Quản Trị Viên cao cấp.</p>
+        <a href="/admin.html" class="btn-action">Nhấp vào đây nếu không tự chuyển</a>
+    </div>
+</body>
+</html>

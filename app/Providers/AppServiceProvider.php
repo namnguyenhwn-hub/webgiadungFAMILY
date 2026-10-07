@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        \Illuminate\Pagination\Paginator::useBootstrapFive();
+
+        if (request()->is('webgiadung*') || request()->is('webgiadung')) {
+            \Illuminate\Support\Facades\URL::forceRootUrl(request()->root() . '/webgiadung');
+        }
+    }
+}
