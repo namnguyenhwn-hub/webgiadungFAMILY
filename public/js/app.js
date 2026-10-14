@@ -519,9 +519,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Determine which cards match both category and search
     const matchedCards = [];
+    const filterCat = (currentFilterCategory || 'all').trim();
+
     productCards.forEach(card => {
-      const cardCategory = card.getAttribute('data-category') || '';
-      const categoryMatches = (currentFilterCategory === 'all' || cardCategory === currentFilterCategory);
+      const cardCatRaw = (card.getAttribute('data-category') || '').trim();
+      const cardCatSlug = (card.getAttribute('data-category-slug') || '').trim();
+      const cardCatId = (card.getAttribute('data-category-id') || '').trim();
+      const cardCategories = cardCatRaw.split(/\s+/).filter(Boolean);
+
+      const categoryMatches = (
+        filterCat === 'all' ||
+        cardCategories.includes(filterCat) ||
+        cardCatRaw === filterCat ||
+        cardCatSlug === filterCat ||
+        cardCatId === filterCat
+      );
 
       if (!categoryMatches) {
         card.style.setProperty('display', 'none', 'important');
@@ -596,11 +608,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const emptyDiv = document.createElement('div');
         emptyDiv.id = 'dynamicEmptySearchState';
         emptyDiv.className = 'empty-search-state';
+        emptyDiv.style.gridColumn = '1 / -1';
+        emptyDiv.style.textAlign = 'center';
+        emptyDiv.style.padding = '50px 20px';
         emptyDiv.innerHTML = `
-          <i class="fa-solid fa-box-open"></i>
-          <h3>Không tìm thấy sản phẩm phù hợp</h3>
-          <p>Không có sản phẩm nào khớp với từ khóa "<strong>${escapeHtml(cleanQuery)}</strong>".</p>
-          <button type="button" class="btn-clear-search" onclick="clearSearchFilter()" style="font-size: 0.9rem; padding: 8px 20px;">
+          <i class="fa-solid fa-box-open" style="font-size: 2.8rem; color: #C5A059; margin-bottom: 14px;"></i>
+          <h3 style="font-size: 1.25rem; font-weight: 700; color: #1E293B; margin-bottom: 8px;">Không tìm thấy sản phẩm phù hợp</h3>
+          <p style="color: #64748B; font-size: 0.95rem; margin-bottom: 18px;">Không có sản phẩm nào khớp với từ khóa "<strong>${escapeHtml(cleanQuery)}</strong>".</p>
+          <button type="button" class="btn-clear-search" onclick="clearSearchFilter()" style="font-size: 0.9rem; padding: 10px 24px; background: linear-gradient(135deg, #DFC07A 0%, #C5A059 50%, #9B782F 100%); color: #FFF; border: none; border-radius: 9999px; cursor: pointer; font-weight: 600;">
             Xem tất cả sản phẩm
           </button>
         `;
@@ -610,6 +625,24 @@ document.addEventListener('DOMContentLoaded', () => {
       if (activeSearchBanner) {
         activeSearchBanner.style.display = 'none';
         activeSearchBanner.innerHTML = '';
+      }
+
+      if (totalMatched === 0 && container) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.id = 'dynamicEmptySearchState';
+        emptyDiv.className = 'empty-search-state';
+        emptyDiv.style.gridColumn = '1 / -1';
+        emptyDiv.style.textAlign = 'center';
+        emptyDiv.style.padding = '50px 20px';
+        emptyDiv.innerHTML = `
+          <i class="fa-solid fa-box-open" style="font-size: 2.8rem; color: #C5A059; margin-bottom: 14px;"></i>
+          <h3 style="font-size: 1.25rem; font-weight: 700; color: #1E293B; margin-bottom: 8px;">Không có sản phẩm trong danh mục này</h3>
+          <p style="color: #64748B; font-size: 0.95rem; margin-bottom: 18px;">Danh mục này hiện chưa có sản phẩm nào hoặc đang được cập nhật thêm.</p>
+          <button type="button" class="btn-clear-search" onclick="filterByCategory('all')" style="font-size: 0.9rem; padding: 10px 24px; background: linear-gradient(135deg, #DFC07A 0%, #C5A059 50%, #9B782F 100%); color: #FFF; border: none; border-radius: 9999px; cursor: pointer; font-weight: 600;">
+            Xem tất cả sản phẩm
+          </button>
+        `;
+        container.appendChild(emptyDiv);
       }
     }
 
@@ -701,11 +734,11 @@ document.addEventListener('DOMContentLoaded', () => {
     currentProductPage = 1;
     updateProductsDisplayAndPagination();
 
-    // Sync active classes
-    catPills.forEach(pill => {
+    // Sync active classes dynamically
+    document.querySelectorAll('.cat-pill').forEach(pill => {
       pill.classList.toggle('active', pill.getAttribute('data-category') === categoryId);
     });
-    filterTabBtns.forEach(btn => {
+    document.querySelectorAll('.filter-tab-btn').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-category') === categoryId);
     });
   }
@@ -898,11 +931,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  filterTabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-tab-btn');
+    if (btn) {
       const cat = btn.getAttribute('data-category');
-      filterByCategory(cat);
-    });
+      if (cat) filterByCategory(cat);
+    }
   });
 
   // Initial call to set up 8-items-per-page pagination

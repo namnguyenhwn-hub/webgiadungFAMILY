@@ -397,24 +397,27 @@ class ProductController extends Controller
     // ==========================================
     public function apiIndex()
     {
-        $products = Product::with('category')->orderBy('id', 'desc')->get();
+        $products = Product::with('categoryRel')->orderBy('id', 'desc')->get();
+        $categories = Category::all()->keyBy('id');
 
-        $formatted = $products->map(function ($p) {
-            $catName = is_object($p->category) ? $p->category->name : ($p->category ?: 'Gia dụng thông minh');
+        $formatted = $products->map(function ($p) use ($categories) {
+            $catObj = $categories->get($p->category_id);
+            $catName = $catObj ? $catObj->name : ($p->category ?: 'Gia dụng thông minh');
+            $dbCatSlug = $catObj ? $catObj->slug : ($p->category ? \Illuminate\Support\Str::slug($p->category) : 'all');
             $catName = self::formatSentenceCase($catName);
             $pName = self::formatSentenceCase($p->name);
             $lowerText = mb_strtolower($catName . ' ' . $pName, 'UTF-8');
-            $catSlug = 'all';
+            $typeSlug = 'all';
             if (str_contains($lowerText, 'chiên')) {
-                $catSlug = 'noi-chien';
+                $typeSlug = 'noi-chien';
             } elseif (str_contains($lowerText, 'bếp') || str_contains($lowerText, 'từ')) {
-                $catSlug = 'bep-dien-tu';
+                $typeSlug = 'bep-dien-tu';
             } elseif (str_contains($lowerText, 'lạnh') || str_contains($lowerText, 'mát') || str_contains($lowerText, 'tủ')) {
-                $catSlug = 'tu-lanh';
+                $typeSlug = 'tu-lanh';
             } elseif (str_contains($lowerText, 'cơm') || str_contains($lowerText, 'cao tần')) {
-                $catSlug = 'noi-com-ih';
+                $typeSlug = 'noi-com-ih';
             } elseif (str_contains($lowerText, 'bụi') || str_contains($lowerText, 'robot') || str_contains($lowerText, 'làm sạch')) {
-                $catSlug = 'robot-hut-bui';
+                $typeSlug = 'robot-hut-bui';
             }
 
             $img = $p->image ?: 'images/products/air_fryer.jpg';
@@ -425,6 +428,8 @@ class ProductController extends Controller
                 $img = preg_replace('#^public/#', '', $img);
             }
 
+            $combinedCategorySlug = trim($dbCatSlug . ' ' . $typeSlug);
+
             return [
                 'id' => (int)$p->id,
                 'name' => $pName,
@@ -433,7 +438,10 @@ class ProductController extends Controller
                 'material' => $p->material ?: 'Hợp kim & Nhựa ABS',
                 'usage' => $p->usage ?: ($p->description ?: 'Thiết bị gia dụng thông minh'),
                 'category' => $catName,
-                'category_slug' => $catSlug,
+                'category_id' => (int)$p->category_id,
+                'category_slug' => $combinedCategorySlug,
+                'db_category_slug' => $dbCatSlug,
+                'type_slug' => $typeSlug,
                 'price' => (float)$p->price,
                 'stock' => (int)($p->stock ?? $p->quantity ?? 15),
                 'sold' => (int)($p->sold ?? 0),

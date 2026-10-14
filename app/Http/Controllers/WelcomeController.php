@@ -13,10 +13,11 @@ class WelcomeController extends Controller
      */
     public function index()
     {
-        $dbProducts = Product::with('category')->orderBy('id', 'desc')->get();
+        $dbProducts = Product::with('categoryRel')->orderBy('id', 'desc')->get();
         $specialProducts = Product::where('is_special', true)->orderBy('updated_at', 'desc')->take(3)->get();
         $dbCategories = Category::orderBy('sort_order', 'asc')->get();
         
+        $categoriesById = $dbCategories->keyBy('id');
         $catCounts = ['all' => $dbProducts->count()];
 
         foreach ($dbCategories as $cat) {
@@ -24,11 +25,9 @@ class WelcomeController extends Controller
         }
 
         foreach ($dbProducts as $p) {
-            if (is_object($p->category) && isset($p->category->slug)) {
-                $slug = $p->category->slug;
-                if (isset($catCounts[$slug])) {
-                    $catCounts[$slug]++;
-                }
+            $cat = $categoriesById->get($p->category_id);
+            if ($cat && isset($catCounts[$cat->slug])) {
+                $catCounts[$cat->slug]++;
             }
         }
 

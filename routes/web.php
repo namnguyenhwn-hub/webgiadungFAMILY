@@ -141,11 +141,12 @@ Route::get('/webgiadung/products', [ProductController::class, 'userIndex']);
 Route::get('/webgiadung/products/{product}', [ProductController::class, 'show_normal']);
 Route::post('/webgiadung/products/{product}/reviews', [ProductController::class, 'storeReview']);
 
-Route::middleware(['auth'])->group(function () {
-    // Khu vực xem Danh mục của User thường
-    Route::get('/categories', [CategoryController::class, 'userIndex'])->name('categories.index');
-    Route::get('/categories/{category}', [CategoryController::class, 'showNormal'])->name('categories.show');
-});
+// Khu vực xem Danh mục sản phẩm (Hỗ trợ cả khách vãng lai và thành viên)
+Route::get('/categories', [CategoryController::class, 'userIndex'])->name('categories.index');
+Route::get('/categories/{category}', [CategoryController::class, 'showNormal'])->name('categories.show');
+Route::get('/webgiadung/categories', [CategoryController::class, 'userIndex']);
+Route::get('/webgiadung/categories/{category}', [CategoryController::class, 'showNormal']);
+
 
 // 7. Quản lý Giỏ Hàng & Mua Hàng (Lab 05B)
 Route::prefix('cart')->name('cart.')->group(function () {
@@ -254,7 +255,8 @@ Route::get('/checkout/form', [CheckoutController::class, 'index'])->name('checko
 Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
 Route::get('/checkout/bank', [CheckoutController::class, 'showBankQr'])->name('checkout.bank');
 Route::get('/checkout/bidv', [CheckoutController::class, 'showBankQr'])->name('checkout.bidv');
-Route::get('/checkout/chuyen-khoan-vpbank', [CheckoutController::class, 'showBankQr'])->name('checkout.chuyển khoản ngân hàng VPBank');
+Route::get('/checkout/chuyen-khoan-vpbank', [CheckoutController::class, 'showBankQr'])->name('checkout.vpbank');
+Route::get('/checkout/vpbank', [CheckoutController::class, 'showBankQr'])->name('checkout.chuyển khoản ngân hàng VPBank');
 
 Route::get('/webgiadung/checkout', [CheckoutController::class, 'index']);
 Route::get('/webgiadung/checkout/form', [CheckoutController::class, 'index']);

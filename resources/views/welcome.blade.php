@@ -1244,14 +1244,12 @@
         <div class="container">
 
 
-            <!-- Filter Tabs -->
+            <!-- Filter Tabs (Đồng bộ theo danh mục thực tế từ Database) -->
             <div class="grid-filter-tabs">
                 <button class="filter-tab-btn active" data-category="all">Tất cả sản phẩm</button>
-                <button class="filter-tab-btn" data-category="noi-chien">Nồi chiên không dầu</button>
-                <button class="filter-tab-btn" data-category="bep-dien-tu">Bếp điện từ</button>
-                <button class="filter-tab-btn" data-category="tu-lanh">Tủ lạnh smart</button>
-                <button class="filter-tab-btn" data-category="noi-com-ih">Nồi cơm cao tần</button>
-                <button class="filter-tab-btn" data-category="robot-hut-bui">Robot hút bụi AI</button>
+                @foreach($dbCategories as $cat)
+                <button class="filter-tab-btn" data-category="{{ $cat->slug }}">{{ $cat->name }}</button>
+                @endforeach
             </div>
 
             <!-- Active Search Filter Banner -->
@@ -1260,27 +1258,25 @@
             <!-- Grid Items -->
             <div class="products-grid">
     @php
+        $categoriesById = $dbCategories->keyBy('id');
         $cardIndex = 0;
     @endphp
     @foreach($dbProducts as $p)
         @php
-            $catName = 'Gia dụng thông minh';
-            if (is_object($p->category) && isset($p->category->name)) {
-                $catName = $p->category->name;
-            } elseif (is_string($p->category) && !empty($p->category)) {
-                $catName = $p->category;
-            } elseif (!empty($p->attributes['category'])) {
-                $catName = $p->attributes['category'];
-            }
+            $catModel = $categoriesById->get($p->category_id) ?? ($p->relationLoaded('categoryRel') ? $p->categoryRel : null);
+            $catName = $catModel ? $catModel->name : ($p->category ?: 'Gia dụng thông minh');
+            $dbCatSlug = $catModel ? $catModel->slug : \Illuminate\Support\Str::slug($catName);
             $catName = \App\Http\Controllers\ProductController::formatSentenceCase($catName);
 
             $lowerText = mb_strtolower($catName . ' ' . $p->name, 'UTF-8');
-            $catSlug = 'all';
-            if (str_contains($lowerText, 'chiên')) { $catSlug = 'noi-chien'; }
-            elseif (str_contains($lowerText, 'bếp') || str_contains($lowerText, 'từ')) { $catSlug = 'bep-dien-tu'; }
-            elseif (str_contains($lowerText, 'lạnh') || str_contains($lowerText, 'mát') || str_contains($lowerText, 'tủ')) { $catSlug = 'tu-lanh'; }
-            elseif (str_contains($lowerText, 'cơm') || str_contains($lowerText, 'cao tần')) { $catSlug = 'noi-com-ih'; }
-            elseif (str_contains($lowerText, 'bụi') || str_contains($lowerText, 'robot') || str_contains($lowerText, 'làm sạch')) { $catSlug = 'robot-hut-bui'; }
+            $typeSlug = 'all';
+            if (str_contains($lowerText, 'chiên')) { $typeSlug = 'noi-chien'; }
+            elseif (str_contains($lowerText, 'bếp') || str_contains($lowerText, 'từ')) { $typeSlug = 'bep-dien-tu'; }
+            elseif (str_contains($lowerText, 'lạnh') || str_contains($lowerText, 'mát') || str_contains($lowerText, 'tủ')) { $typeSlug = 'tu-lanh'; }
+            elseif (str_contains($lowerText, 'cơm') || str_contains($lowerText, 'cao tần')) { $typeSlug = 'noi-com-ih'; }
+            elseif (str_contains($lowerText, 'bụi') || str_contains($lowerText, 'robot') || str_contains($lowerText, 'làm sạch')) { $typeSlug = 'robot-hut-bui'; }
+
+            $allCategoriesAttr = trim($dbCatSlug . ' ' . $typeSlug);
 
             $img = $p->image ?: 'images/products/air_fryer.jpg';
             if (!str_starts_with($img, 'http')) {
@@ -1306,7 +1302,7 @@
             $cardIndex++;
         @endphp
 
-        <div class="product-card" data-category="{{$catSlug}}" data-product-id="{{$pId}}" data-product-name="{{$pNameEsc}}" data-product-price="{{$p->price}}" data-product-img="{{$img}}" data-product-brand="{{$brandEsc}}" data-product-origin="{{$originEsc}}" data-product-material="{{$materialEsc}}" data-product-usage="{{$usageEsc}}" onclick="goToProductDetail({{$pId}}, event)" {!! $hideStyle !!}>
+        <div class="product-card" data-category="{{$allCategoriesAttr}}" data-category-slug="{{$dbCatSlug}}" data-category-id="{{$p->category_id}}" data-product-id="{{$pId}}" data-product-name="{{$pNameEsc}}" data-product-price="{{$p->price}}" data-product-img="{{$img}}" data-product-brand="{{$brandEsc}}" data-product-origin="{{$originEsc}}" data-product-material="{{$materialEsc}}" data-product-usage="{{$usageEsc}}" onclick="goToProductDetail({{$pId}}, event)" {!! $hideStyle !!}>
             <span class="product-badge-flag badge-hot">Chính hãng</span>
             <div class="product-img-box">
                 <a href="{{$detailUrl}}" onclick="goToProductDetail({{$pId}}, event)" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
@@ -2859,12 +2855,22 @@
 
                         function getCatSlug(catName, prodName) {
                             const str = ((catName || '') + ' ' + (prodName || '')).toLowerCase();
-                            if (str.includes('chiên') || str.includes('nồi chiên')) return 'noi-chien';
-                            if (str.includes('bếp') || str.includes('từ') || str.includes('hồng ngoại')) return 'bep-dien-tu';
-                            if (str.includes('lạnh') || str.includes('mát') || str.includes('tủ')) return 'tu-lanh';
-                            if (str.includes('cơm') || str.includes('cao tần') || str.includes('ih')) return 'noi-com-ih';
-                            if (str.includes('bụi') || str.includes('robot') || str.includes('làm sạch')) return 'robot-hut-bui';
-                            return 'all';
+                            let typeSlug = '';
+                            if (str.includes('chiên') || str.includes('nồi chiên')) typeSlug = 'noi-chien';
+                            else if (str.includes('bếp') || str.includes('từ') || str.includes('hồng ngoại')) typeSlug = 'bep-dien-tu';
+                            else if (str.includes('lạnh') || str.includes('mát') || str.includes('tủ')) typeSlug = 'tu-lanh';
+                            else if (str.includes('cơm') || str.includes('cao tần') || str.includes('ih')) typeSlug = 'noi-com-ih';
+                            else if (str.includes('bụi') || str.includes('robot') || str.includes('làm sạch')) typeSlug = 'robot-hut-bui';
+
+                            let dbSlug = '';
+                            if (catName) {
+                                dbSlug = catName.toLowerCase()
+                                    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                                    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+                                    .replace(/[^a-z0-9]+/g, '-')
+                                    .replace(/^-+|-+$/g, '');
+                            }
+                            return (dbSlug + ' ' + typeSlug).trim() || 'all';
                         }
 
                         function normalizeImgUrl(img) {
@@ -2901,7 +2907,7 @@
                             const detailUrl = base + 'products/' + p.id;
 
                             return `
-                <div class="product-card" data-category="${catSlug}" data-product-id="${p.id}" data-product-name="${pNameEsc}" data-product-price="${p.price}" data-product-img="${img}" onclick="goToProductDetail(${p.id}, event)" style="cursor: pointer;">
+                <div class="product-card" data-category="${catSlug}" data-category-id="${p.category_id || ''}" data-product-id="${p.id}" data-product-name="${pNameEsc}" data-product-price="${p.price}" data-product-img="${img}" onclick="goToProductDetail(${p.id}, event)" style="cursor: pointer;">
                     <span class="product-badge-flag badge-hot">Chính hãng</span>
                     <div class="product-img-box">
                         <a href="${detailUrl}" onclick="goToProductDetail(${p.id}, event)" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
@@ -2987,6 +2993,7 @@
                                     const hasChanged = prevPrice != p.price || prevName != p.name || prevImg != img;
 
                                     card.setAttribute('data-category', catSlug);
+                                    if (p.category_id) card.setAttribute('data-category-id', p.category_id);
                                     card.setAttribute('data-product-name', p.name);
                                     card.setAttribute('data-product-price', p.price);
                                     card.setAttribute('data-product-img', img);

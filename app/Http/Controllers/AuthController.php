@@ -66,7 +66,7 @@ class AuthController extends Controller
             return redirect()->to($prefix . route('welcome', [], false))->with('success', 'Đăng ký tài khoản thành công! Bạn đã được đăng nhập tự động.');
         } catch (\Exception $e) {
             Log::error('Registration failed: ' . $e->getMessage());
-            return back()->with('error', 'Registration failed. Please try again.');
+            return back()->with('error', 'Đăng ký tài khoản không thành công. Vui lòng thử lại sau.');
         }
     }
 
@@ -127,7 +127,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials are incorrect.',
+            'email' => 'Email hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.',
         ])->onlyInput('email');
     }
 

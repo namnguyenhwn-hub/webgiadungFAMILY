@@ -103,8 +103,22 @@ class CategoryController extends Controller
         return view('categories.index', compact('categories'));
     }
 
-    public function showNormal(Category $category)
+    public function showNormal($category)
     {
+        if (!$category instanceof Category) {
+            $cat = Category::where('id', $category)
+                ->orWhere('slug', $category)
+                ->first();
+            if (!$cat) {
+                $cat = Category::where('name', 'like', '%' . $category . '%')->first();
+            }
+            if (!$cat) {
+                return redirect()->route('categories.index')->with('error', 'Danh mục không tồn tại.');
+            }
+            $category = $cat;
+        }
+
         return view('categories.show', compact('category'));
     }
 }
+

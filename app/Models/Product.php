@@ -213,11 +213,44 @@ class Product extends Model
 
     public function category()
     {
+        return $this->categoryRel();
+    }
+
+    public function categoryRel()
+    {
         return $this->belongsTo(Category::class, 'category_id')->withDefault(function () {
             return new Category([
-                'name' => $this->attributes['category'] ?? 'Gia dụng cao cấp'
+                'name' => $this->attributes['category'] ?? 'Gia dụng cao cấp',
+                'slug' => \Illuminate\Support\Str::slug($this->attributes['category'] ?? 'gia-dung-cao-cap'),
             ]);
         });
+    }
+
+    public function getCategorySlugAttribute()
+    {
+        if ($this->relationLoaded('categoryRel') && $this->getRelation('categoryRel')) {
+            return $this->getRelation('categoryRel')->slug;
+        }
+        if ($this->category_id) {
+            $cat = Category::find($this->category_id);
+            if ($cat) return $cat->slug;
+        }
+        return \Illuminate\Support\Str::slug($this->attributes['category'] ?? 'all');
+    }
+
+    public function getCategoryNameAttribute()
+    {
+        if (!empty($this->attributes['category'])) {
+            return $this->attributes['category'];
+        }
+        if ($this->relationLoaded('categoryRel') && $this->getRelation('categoryRel')) {
+            return $this->getRelation('categoryRel')->name;
+        }
+        if ($this->category_id) {
+            $cat = Category::find($this->category_id);
+            if ($cat) return $cat->name;
+        }
+        return 'Gia dụng thông minh';
     }
 
     public function orderItems()

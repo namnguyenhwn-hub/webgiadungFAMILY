@@ -19,17 +19,17 @@
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-4">
 @forelse ($category->products as $product)
+    @php
+        $img = $product->image ?: 'images/products/air_fryer.jpg';
+        if (!str_starts_with($img, 'http')) {
+            if (str_starts_with($img, 'products/')) $img = 'storage/' . $img;
+            elseif (str_starts_with($img, 'public/')) $img = preg_replace('#^public/#', '', $img);
+            $img = asset(ltrim($img, '/'));
+        }
+    @endphp
     <div class="col">
         <div class="card h-100 shadow-sm border-0">
-            @if($product->image)
-                @if(str_starts_with($product->image, 'http') || str_starts_with($product->image, 'images/'))
-                    <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
-                @else
-                    <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
-                @endif
-            @else
-                <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
-            @endif
+            <img src="{{ $img }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: contain; background: #f8fafc;" onerror="this.onerror=null; this.src='{{ asset('images/products/air_fryer.jpg') }}'">
             <div class="card-body d-flex flex-column text-center">
                 <h5 class="card-title text-truncate fw-bold">{{ $product->name }}</h5>
                 <p class="card-text text-muted small flex-grow-1">
